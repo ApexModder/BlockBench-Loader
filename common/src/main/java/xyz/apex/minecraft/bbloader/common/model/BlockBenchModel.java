@@ -25,6 +25,7 @@ public record BlockBenchModel(
 
         BBResolution resolution, /* required */
         List<BBElement> elements, /* optional, default: [ ] | while this is optional, it should rarely ever be empty */
+        List<BBTexture> textures, /* optional, default: [ ] | while this is optional, it should rarely ever be empty */
 
         @SerializedName("display") Map<ItemDisplayContext, BBDisplay> displays /* optional, default: { } */
 
@@ -33,7 +34,6 @@ public record BlockBenchModel(
         //  variable_placeholders
         //  variable_placeholder_buttons
         //  outliner
-        //  textures
 )
 {
     public static final Gson GSON = Util.make(new GsonBuilder(), builder -> builder
@@ -43,6 +43,7 @@ public record BlockBenchModel(
             .registerTypeAdapter(BBElement.class, new BBElement.Deserializer())
             .registerTypeAdapter(BBFace.class, new BBFace.Deserializer())
             .registerTypeAdapter(BBDisplay.class, new BBDisplay.Deserializer())
+            .registerTypeAdapter(BBTexture.class, new BBTexture.Deserializer())
     ).create();
 
     public static BlockBenchModel fromReader(Reader reader)
@@ -76,7 +77,7 @@ public record BlockBenchModel(
 
                     ctx.deserialize(GsonHelper.getAsJsonObject(root, "resolution"), BBResolution.class),
                     parseElements(root, ctx),
-
+                    parseTextures(root, ctx),
                     parseDisplays(root, ctx)
             );
         }
@@ -123,6 +124,21 @@ public record BlockBenchModel(
             }
 
             return map.build();
+        }
+
+        private List<BBTexture> parseTextures(JsonObject root, JsonDeserializationContext ctx) throws JsonParseException
+        {
+            var textures = ImmutableList.<BBTexture>builder();
+
+            if(GsonHelper.isArrayNode(root, "textures"))
+            {
+                for(var element : GsonHelper.getAsJsonArray(root, "textures"))
+                {
+                    textures.add((BBTexture) ctx.deserialize(element, BBTexture.class));
+                }
+            }
+
+            return textures.build();
         }
     }
 }

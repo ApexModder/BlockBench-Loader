@@ -2,9 +2,15 @@ package xyz.apex.minecraft.bbloader.common;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.mojang.datafixers.util.Either;
 import net.minecraft.client.renderer.block.model.*;
+import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import xyz.apex.minecraft.bbloader.common.model.BBDisplay;
@@ -14,6 +20,7 @@ import xyz.apex.minecraft.bbloader.common.model.BlockBenchModel;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public interface VanillaHelper
 {
@@ -22,12 +29,54 @@ public interface VanillaHelper
         return new BlockModel(
                 null, // TODO: Parents?
                 elements(bbModel),
-                Map.of(), // TODO: Textures
+                textures(bbModel),
                 bbModel.ambientOcclusion(),
                 bbModel.frontGuiLight() ? BlockModel.GuiLight.FRONT : BlockModel.GuiLight.SIDE,
                 BBLoader.modLoader().buildItemTransforms(bbModel),
                 List.of() // TODO: ItemPredicates
         );
+    }
+
+    static Map<String, Either<Material, String>> textures(BlockBenchModel bbModel)
+    {
+        var particle = new AtomicBoolean(false);
+        var textures = ImmutableMap.<String, Either<Material, String>>builder();
+        // ensure missingno exists, this is a builtin default texture everything defaults to in case of an error
+        textures.put("missingno", Either.left(new Material(TextureAtlas.LOCATION_BLOCKS, MissingTextureAtlasSprite.getLocation())));
+
+        bbModel.textures().forEach(bbTexture -> {
+            var textureId = bbTexture.id();
+
+            if(bbTexture.particle())
+            {
+                if(particle.get()) throw new RuntimeException("Duplicate particle texture definition!");
+                particle.set(true);
+                // route particle texture to point towards this texture
+                textures.put(BlockModel.PARTICLE_TEXTURE_REFERENCE, Either.right("%s".formatted(textureId)));
+            }
+
+            var namespace = bbTexture.namespace();
+            var name = StringUtils.removeEndIgnoreCase(bbTexture.name(), ".png"); // remove file ext, its not required in texture path
+            var folder = StringUtils.removeEnd(bbTexture.folder(), "/"); // if ending with / remove it, formatting will add one
+            var path = "%s/%s".formatted(folder, name);
+            // registers texture leading to following path
+            // <namespace>:block/[<folder>/]<path>
+            textures.put(textureId, Either.left(new Material(TextureAtlas.LOCATION_BLOCKS, new ResourceLocation(namespace, path))));
+        });
+
+        // ensure particle always exists
+        if(!particle.get())
+        {
+            if(bbModel.textures().isEmpty()) textures.put(BlockModel.PARTICLE_TEXTURE_REFERENCE, Either.right("missingno")); // default to #missingno
+            else
+            {
+                // default to first texture, if no particle defined
+                var texture = bbModel.textures().get(0);
+                textures.put(BlockModel.PARTICLE_TEXTURE_REFERENCE, Either.right(texture.id()));
+            }
+        }
+
+        return textures.build();
     }
 
     static List<BlockElement> elements(BlockBenchModel bbModel)
@@ -83,9 +132,17 @@ public interface VanillaHelper
         return new BlockElementFace(
                 null, // TODO: cull face support
                 bbFace.tintIndex(),
-                "#plush", // TODO: Lookup correct texture
+                textureId(bbModel, bbElement, bbFace),
                 elementFaceUV(bbModel, bbElement, bbFace)
         );
+    }
+
+    static String textureId(BlockBenchModel bbModel, BBElement bbElement, BBFace bbFace)
+    {
+        var faceTexture = bbFace.texture();
+        var textures = bbModel.textures();
+        if(textures.isEmpty() || faceTexture < 0 || faceTexture > textures.size() - 1) return "missingno";
+        return textures.get(faceTexture).id();
     }
 
     static BlockFaceUV elementFaceUV(BlockBenchModel bbModel, BBElement bbElement, BBFace bbFace)

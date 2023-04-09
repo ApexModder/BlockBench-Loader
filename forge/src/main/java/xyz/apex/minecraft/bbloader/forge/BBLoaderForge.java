@@ -2,7 +2,7 @@ package xyz.apex.minecraft.bbloader.forge;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -17,7 +17,7 @@ import xyz.apex.minecraft.bbloader.common.DebugData;
 @Mod(BBLoader.ID)
 public final class BBLoaderForge
 {
-    public static final RegistryObject<Item> TEST_BLOCK = RegistryObject.createOptional(new ResourceLocation(BBLoader.ID, "test_block"), ForgeRegistries.Keys.ITEMS, BBLoader.ID);
+    public static final RegistryObject<Block> TEST_BLOCK = RegistryObject.createOptional(new ResourceLocation(BBLoader.ID, "test_block"), ForgeRegistries.Keys.BLOCKS, BBLoader.ID);
 
     public BBLoaderForge()
     {

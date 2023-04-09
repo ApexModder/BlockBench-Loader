@@ -30,27 +30,27 @@
 			"faces": {
 				"north": {
 					"uv": [8, 8, 16, 16],
-					"texture": 1
+					"texture": 0
 				},
 				"east": {
 					"uv": [0, 8, 8, 16],
-					"texture": 1
+					"texture": 0
 				},
 				"south": {
 					"uv": [24, 8, 32, 16],
-					"texture": 1
+					"texture": 0
 				},
 				"west": {
 					"uv": [16, 8, 24, 16],
-					"texture": 1
+					"texture": 0
 				},
 				"up": {
 					"uv": [16, 8, 8, 0],
-					"texture": 1
+					"texture": 0
 				},
 				"down": {
 					"uv": [24, 0, 16, 8],
-					"texture": 1
+					"texture": 0
 				}
 			},
 			"type": "cube",
@@ -65,33 +65,34 @@
 			"to": [10.5, 10.5, 13.75],
 			"autouv": 0,
 			"color": 0,
+			"visibility": false,
 			"inflate": 0.5,
 			"origin": [-1.5, -1, 1.25],
 			"uv_offset": [32, 0],
 			"faces": {
 				"north": {
 					"uv": [40, 8, 48, 16],
-					"texture": 1
+					"texture": 0
 				},
 				"east": {
 					"uv": [32, 8, 40, 16],
-					"texture": 1
+					"texture": 0
 				},
 				"south": {
 					"uv": [56, 8, 64, 16],
-					"texture": 1
+					"texture": 0
 				},
 				"west": {
 					"uv": [48, 8, 56, 16],
-					"texture": 1
+					"texture": 0
 				},
 				"up": {
 					"uv": [48, 8, 40, 0],
-					"texture": 1
+					"texture": 0
 				},
 				"down": {
 					"uv": [56, 0, 48, 8],
-					"texture": 1
+					"texture": 0
 				}
 			},
 			"type": "cube",
@@ -112,27 +113,27 @@
 			"faces": {
 				"north": {
 					"uv": [20, 20, 28, 32],
-					"texture": 1
+					"texture": 0
 				},
 				"east": {
 					"uv": [16, 20, 20, 32],
-					"texture": 1
+					"texture": 0
 				},
 				"south": {
 					"uv": [32, 20, 40, 32],
-					"texture": 1
+					"texture": 0
 				},
 				"west": {
 					"uv": [28, 20, 32, 32],
-					"texture": 1
+					"texture": 0
 				},
 				"up": {
 					"uv": [28, 20, 20, 16],
-					"texture": 1
+					"texture": 0
 				},
 				"down": {
 					"uv": [36, 16, 28, 20],
-					"texture": 1
+					"texture": 0
 				}
 			},
 			"type": "cube",
@@ -147,6 +148,7 @@
 			"to": [10.5, 6, 11.25],
 			"autouv": 0,
 			"color": 0,
+			"visibility": false,
 			"inflate": 0.25,
 			"rotation": [22.5, 0, 0],
 			"origin": [8, 3, 10.25],
@@ -154,27 +156,27 @@
 			"faces": {
 				"north": {
 					"uv": [20, 36, 28, 48],
-					"texture": 1
+					"texture": 0
 				},
 				"east": {
 					"uv": [16, 36, 20, 48],
-					"texture": 1
+					"texture": 0
 				},
 				"south": {
 					"uv": [32, 36, 40, 48],
-					"texture": 1
+					"texture": 0
 				},
 				"west": {
 					"uv": [28, 36, 32, 48],
-					"texture": 1
+					"texture": 0
 				},
 				"up": {
 					"uv": [28, 36, 20, 32],
-					"texture": 1
+					"texture": 0
 				},
 				"down": {
 					"uv": [36, 32, 28, 36],
-					"texture": 1
+					"texture": 0
 				}
 			},
 			"type": "cube",
@@ -195,27 +197,27 @@
 			"faces": {
 				"north": {
 					"uv": [44, 20, 48, 32],
-					"texture": 1
+					"texture": 0
 				},
 				"east": {
 					"uv": [40, 20, 44, 32],
-					"texture": 1
+					"texture": 0
 				},
 				"south": {
 					"uv": [52, 20, 56, 32],
-					"texture": 1
+					"texture": 0
 				},
 				"west": {
 					"uv": [48, 20, 52, 32],
-					"texture": 1
+					"texture": 0
 				},
 				"up": {
 					"uv": [48, 20, 44, 16],
-					"texture": 1
+					"texture": 0
 				},
 				"down": {
 					"uv": [52, 16, 48, 20],
-					"texture": 1
+					"texture": 0
 				}
 			},
 			"type": "cube",
@@ -230,6 +232,7 @@
 			"to": [13, 6, 12],
 			"autouv": 0,
 			"color": 0,
+			"visibility": false,
 			"inflate": 0.25,
 			"rotation": [0, 0, 22.5],
 			"origin": [12, 3, 11],
@@ -237,27 +240,27 @@
 			"faces": {
 				"north": {
 					"uv": [44, 36, 48, 48],
-					"texture": 1
+					"texture": 0
 				},
 				"east": {
 					"uv": [40, 36, 44, 48],
-					"texture": 1
+					"texture": 0
 				},
 				"south": {
 					"uv": [52, 36, 56, 48],
-					"texture": 1
+					"texture": 0
 				},
 				"west": {
 					"uv": [48, 36, 52, 48],
-					"texture": 1
+					"texture": 0
 				},
 				"up": {
 					"uv": [48, 36, 44, 32],
-					"texture": 1
+					"texture": 0
 				},
 				"down": {
 					"uv": [52, 32, 48, 36],
-					"texture": 1
+					"texture": 0
 				}
 			},
 			"type": "cube",
@@ -278,27 +281,27 @@
 			"faces": {
 				"north": {
 					"uv": [36, 52, 40, 64],
-					"texture": 1
+					"texture": 0
 				},
 				"east": {
 					"uv": [32, 52, 36, 64],
-					"texture": 1
+					"texture": 0
 				},
 				"south": {
 					"uv": [44, 52, 48, 64],
-					"texture": 1
+					"texture": 0
 				},
 				"west": {
 					"uv": [40, 52, 44, 64],
-					"texture": 1
+					"texture": 0
 				},
 				"up": {
 					"uv": [40, 52, 36, 48],
-					"texture": 1
+					"texture": 0
 				},
 				"down": {
 					"uv": [44, 48, 40, 52],
-					"texture": 1
+					"texture": 0
 				}
 			},
 			"type": "cube",
@@ -313,6 +316,7 @@
 			"to": [5, 6, 12],
 			"autouv": 0,
 			"color": 0,
+			"visibility": false,
 			"inflate": 0.25,
 			"rotation": [0, 0, -22.5],
 			"origin": [4, 3, 11],
@@ -320,27 +324,27 @@
 			"faces": {
 				"north": {
 					"uv": [52, 52, 56, 64],
-					"texture": 1
+					"texture": 0
 				},
 				"east": {
 					"uv": [48, 52, 52, 64],
-					"texture": 1
+					"texture": 0
 				},
 				"south": {
 					"uv": [60, 52, 64, 64],
-					"texture": 1
+					"texture": 0
 				},
 				"west": {
 					"uv": [56, 52, 60, 64],
-					"texture": 1
+					"texture": 0
 				},
 				"up": {
 					"uv": [56, 52, 52, 48],
-					"texture": 1
+					"texture": 0
 				},
 				"down": {
 					"uv": [60, 48, 56, 52],
-					"texture": 1
+					"texture": 0
 				}
 			},
 			"type": "cube",
@@ -362,30 +366,30 @@
 				"north": {
 					"uv": [12, 16, 8, 20],
 					"rotation": 180,
-					"texture": 1
+					"texture": 0
 				},
 				"east": {
 					"uv": [0, 20, 4, 32],
 					"rotation": 270,
-					"texture": 1
+					"texture": 0
 				},
 				"south": {
 					"uv": [8, 20, 4, 16],
-					"texture": 1
+					"texture": 0
 				},
 				"west": {
 					"uv": [8, 20, 12, 32],
 					"rotation": 90,
-					"texture": 1
+					"texture": 0
 				},
 				"up": {
 					"uv": [4, 20, 8, 32],
 					"rotation": 180,
-					"texture": 1
+					"texture": 0
 				},
 				"down": {
 					"uv": [12, 20, 16, 32],
-					"texture": 1
+					"texture": 0
 				}
 			},
 			"type": "cube",
@@ -400,6 +404,7 @@
 			"to": [11.5, 2, 9.5],
 			"autouv": 0,
 			"color": 0,
+			"visibility": false,
 			"inflate": 0.25,
 			"rotation": [0, -22.5, 0],
 			"origin": [10.5, 1, 6.5],
@@ -408,30 +413,30 @@
 				"north": {
 					"uv": [12, 32, 8, 36],
 					"rotation": 180,
-					"texture": 1
+					"texture": 0
 				},
 				"east": {
 					"uv": [0, 36, 4, 48],
 					"rotation": 270,
-					"texture": 1
+					"texture": 0
 				},
 				"south": {
 					"uv": [8, 36, 4, 32],
-					"texture": 1
+					"texture": 0
 				},
 				"west": {
 					"uv": [8, 36, 12, 48],
 					"rotation": 90,
-					"texture": 1
+					"texture": 0
 				},
 				"up": {
 					"uv": [4, 36, 8, 48],
 					"rotation": 180,
-					"texture": 1
+					"texture": 0
 				},
 				"down": {
 					"uv": [12, 36, 16, 48],
-					"texture": 1
+					"texture": 0
 				}
 			},
 			"type": "cube",
@@ -453,30 +458,30 @@
 				"north": {
 					"uv": [28, 48, 24, 52],
 					"rotation": 180,
-					"texture": 1
+					"texture": 0
 				},
 				"east": {
 					"uv": [16, 52, 20, 64],
 					"rotation": 270,
-					"texture": 1
+					"texture": 0
 				},
 				"south": {
 					"uv": [24, 52, 20, 48],
-					"texture": 1
+					"texture": 0
 				},
 				"west": {
 					"uv": [24, 52, 28, 64],
 					"rotation": 90,
-					"texture": 1
+					"texture": 0
 				},
 				"up": {
 					"uv": [20, 52, 24, 64],
 					"rotation": 180,
-					"texture": 1
+					"texture": 0
 				},
 				"down": {
 					"uv": [28, 52, 32, 64],
-					"texture": 1
+					"texture": 0
 				}
 			},
 			"type": "cube",
@@ -491,6 +496,7 @@
 			"to": [6.5, 2, 9.5],
 			"autouv": 0,
 			"color": 0,
+			"visibility": false,
 			"inflate": 0.25,
 			"rotation": [0, 22.5, 0],
 			"origin": [5.5, 1, 6.5],
@@ -499,30 +505,30 @@
 				"north": {
 					"uv": [12, 48, 8, 52],
 					"rotation": 180,
-					"texture": 1
+					"texture": 0
 				},
 				"east": {
 					"uv": [0, 52, 4, 64],
 					"rotation": 270,
-					"texture": 1
+					"texture": 0
 				},
 				"south": {
 					"uv": [8, 52, 4, 48],
-					"texture": 1
+					"texture": 0
 				},
 				"west": {
 					"uv": [8, 52, 12, 64],
 					"rotation": 90,
-					"texture": 1
+					"texture": 0
 				},
 				"up": {
 					"uv": [4, 52, 8, 64],
 					"rotation": 180,
-					"texture": 1
+					"texture": 0
 				},
 				"down": {
 					"uv": [12, 52, 16, 64],
-					"texture": 1
+					"texture": 0
 				}
 			},
 			"type": "cube",
@@ -625,10 +631,10 @@
 	],
 	"textures": [
 		{
-			"path": "C:\\Users\\fanta\\OneDrive\\Desktop\\Art Stuff\\Fantasy Modding\\Fantasy's Furniture\\Furniture\\Decorations\\Player Plush\\old\\decorations_player_plush.png",
-			"name": "decorations_player_plush.png",
-			"folder": "",
-			"namespace": "fantasyfurniture",
+			"path": "G:\\Development\\Java\\BlockBench-Loader\\common\\src\\main\\resources\\assets\\bbloader\\textures\\block\\plush.png",
+			"name": "plush.png",
+			"folder": "block",
+			"namespace": "bbloader",
 			"id": "decorations_player_plush",
 			"particle": false,
 			"render_mode": "default",
@@ -639,30 +645,10 @@
 			"frame_interpolate": false,
 			"visible": true,
 			"mode": "bitmap",
-			"saved": false,
+			"saved": true,
 			"uuid": "09ce8d97-6d47-1bff-bdb9-bc994765c24f",
-			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAidJREFUeF7tW71KxEAQ3oCgkN4LRERR8AFsrre0s/ER7H0O7wqtrO4JtPIhDsHuGkHwBwM5sb3CSlmSg9y47mTdLLtJvmuumGQz+fab2W+ys5Fgfnez12/dJZPRlXaEm8lFxD3Dp511TgIw3N9S+jh9ehcSgHSQKO3ZPBcAAAxACLBhhhzgEQF2dpAEu74MHuUj7TqfzM60BL2+v9Ta104/tfaNvTHLQpcREkkAhoNN9To//xASgJ0kVtpf8oWQAMS720r74vlNSADW0wOl/St7FACgDQw4PywYcJsVE3mSFv/jh54woPcAIAd0PQnqlpnOL4P05Wn9T+t9rrx1/f3A1j/6vr9ESFX60nq/Tn3vWjrb+gcACAJKBlSv6XwI0FqAJj2q9am2P45LVVSiZpo0uVqBG5/zj5PaK7XAlGh/qvWptpdaXjq4rCXo/TTeuPHo9dz43Hh1ag0AUK0GwQCEwGr9XyfGkAOQBLEKYBmEDig/qrZWCFUVWO+ksMtv7m0Y2+umRAgAAYAQZsGnD2CAT/RDeDYYEMIs+PQBDPCJfgjPBgNCmAWfPoABPtEP4dlgQAiz4NOHxhlgu39ve78pmE4AWJ4vsO0v+M/9AMAQAScMaLK/wLQ/wfD9hTUArvsLbPf/OUAaAeCvfQHbvcU693MNEACAQQAM4CjC2V02WCAEyHkEVY8ScoDleQPkAC7GOTtyQOXMUdNdZkiCbUmCLvsLXEvhH3DxfIynINy/AAAAAElFTkSuQmCC",
-			"relative_path": "C:/Users/fanta/OneDrive/Desktop/Art Stuff/Fantasy Modding/Fantasy's Furniture/Furniture/Decorations/Player Plush/old/decorations_player_plush.png"
-		},
-		{
-			"path": "C:\\Users\\fanta\\OneDrive\\Desktop\\Art Stuff\\Minecraft Skins\\FantasyGaming\\Royalty\\royalty.png",
-			"name": "royalty.png",
-			"folder": "",
-			"namespace": "",
-			"id": "1",
-			"particle": true,
-			"render_mode": "default",
-			"render_sides": "auto",
-			"frame_time": 1,
-			"frame_order_type": "loop",
-			"frame_order": "",
-			"frame_interpolate": false,
-			"visible": true,
-			"mode": "bitmap",
-			"saved": false,
-			"uuid": "3561e724-3de7-6421-deb4-02906aab07cd",
-			"source": "data:image/png;base64,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",
-			"relative_path": "C:/Users/fanta/OneDrive/Desktop/Art Stuff/Minecraft Skins/FantasyGaming/Royalty/royalty.png"
+			"relative_path": "../../../textures/block/plush.png",
+			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAidJREFUeF7tW71KxEAQ3oCgkN4LRERR8AFsrre0s/ER7H0O7wqtrO4JtPIhDsHuGkHwBwM5sb3CSlmSg9y47mTdLLtJvmuumGQz+fab2W+ys5Fgfnez12/dJZPRlXaEm8lFxD3Dp511TgIw3N9S+jh9ehcSgHSQKO3ZPBcAAAxACLBhhhzgEQF2dpAEu74MHuUj7TqfzM60BL2+v9Ta104/tfaNvTHLQpcREkkAhoNN9To//xASgJ0kVtpf8oWQAMS720r74vlNSADW0wOl/St7FACgDQw4PywYcJsVE3mSFv/jh54woPcAIAd0PQnqlpnOL4P05Wn9T+t9rrx1/f3A1j/6vr9ESFX60nq/Tn3vWjrb+gcACAJKBlSv6XwI0FqAJj2q9am2P45LVVSiZpo0uVqBG5/zj5PaK7XAlGh/qvWptpdaXjq4rCXo/TTeuPHo9dz43Hh1ag0AUK0GwQCEwGr9XyfGkAOQBLEKYBmEDig/qrZWCFUVWO+ksMtv7m0Y2+umRAgAAYAQZsGnD2CAT/RDeDYYEMIs+PQBDPCJfgjPBgNCmAWfPoABPtEP4dlgQAiz4NOHxhlgu39ve78pmE4AWJ4vsO0v+M/9AMAQAScMaLK/wLQ/wfD9hTUArvsLbPf/OUAaAeCvfQHbvcU693MNEACAQQAM4CjC2V02WCAEyHkEVY8ScoDleQPkAC7GOTtyQOXMUdNdZkiCbUmCLvsLXEvhH3DxfIynINy/AAAAAElFTkSuQmCC"
 		}
 	],
 	"display": {

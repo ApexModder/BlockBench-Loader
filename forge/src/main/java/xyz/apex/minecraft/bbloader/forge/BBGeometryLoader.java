@@ -42,6 +42,9 @@ public final class BBGeometryLoader implements IGeometryLoader<BBGeometryLoader.
         @Override
         public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation)
         {
+            // NOTE: This breaks forges render type json system,
+            //  have to register render types for your blocks using BBLoader the old fashioned way
+            //  ClientSetup event listener and call ItemBlockRenderTypes.setRenderLayer
             var vanilla = VanillaHelper.toVanilla(bbModel);
             return vanilla.bake(baker, vanilla, spriteGetter, modelState, modelLocation, true);
         }
