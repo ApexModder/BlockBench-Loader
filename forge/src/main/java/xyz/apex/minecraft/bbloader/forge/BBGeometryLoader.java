@@ -13,16 +13,17 @@ import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
 import net.minecraftforge.client.model.IModelBuilder;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IGeometryLoader;
 import net.minecraftforge.client.model.geometry.SimpleUnbakedGeometry;
-import org.joml.Math;
-import org.joml.*;
+import org.apache.commons.lang3.Validate;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 import xyz.apex.minecraft.bbloader.common.BBLoader;
-import xyz.apex.minecraft.bbloader.common.ResourceLoader;
 import xyz.apex.minecraft.bbloader.common.model.BBElement;
 import xyz.apex.minecraft.bbloader.common.model.BBFace;
 import xyz.apex.minecraft.bbloader.common.model.BlockBenchModel;
@@ -34,12 +35,9 @@ public final class BBGeometryLoader implements IGeometryLoader<BBGeometryLoader.
     @Override
     public BBGeometry read(JsonObject root, JsonDeserializationContext ctx) throws JsonParseException
     {
-        if(!GsonHelper.isStringValue(root, "bbmodel")) throw new JsonParseException("Missing requires BBModel property!");
-        var rawBBModelName = GsonHelper.getAsString(root, "bbmodel");
-        var bbModelName = ResourceLocation.tryParse(rawBBModelName);
-        if(bbModelName == null) throw new JsonParseException("Invalid BBModel property! [Invalid resource location] '%s'".formatted(rawBBModelName));
-        var bbModel = ResourceLoader.INSTANCE.getModel(bbModelName);
-        return new BBGeometry(bbModel.orElseThrow(() -> new JsonParseException("No BBModel exists with the name: '%s'".formatted(bbModelName))));
+        var bbModel = BBLoader.getModel(root, false);
+        Validate.notNull(bbModel); // optional==false | should never be null
+        return new BBGeometry(bbModel);
     }
 
     public static final class BBGeometry extends SimpleUnbakedGeometry<BBGeometry>

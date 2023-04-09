@@ -4,7 +4,7 @@ import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import xyz.apex.minecraft.bbloader.common.ResourceLoader;
+import xyz.apex.minecraft.bbloader.common.BBLoader;
 
 final class BBLoaderForgeClient
 {
@@ -22,6 +22,6 @@ final class BBLoaderForgeClient
 
     private void onRegisterClientResourceReload(RegisterClientReloadListenersEvent event)
     {
-        event.registerReloadListener((ResourceManagerReloadListener) pResourceManager -> ResourceLoader.INSTANCE.invalidate());
+        event.registerReloadListener((ResourceManagerReloadListener) pResourceManager -> BBLoader.INSTANCE.invalidate());
     }
 }

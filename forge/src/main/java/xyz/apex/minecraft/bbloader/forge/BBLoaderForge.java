@@ -12,24 +12,25 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import xyz.apex.minecraft.bbloader.common.BBLoader;
+import xyz.apex.minecraft.bbloader.common.DebugData;
 
 @Mod(BBLoader.ID)
-public final class BBLoaderForge implements BBLoader
+public final class BBLoaderForge
 {
-    public static final RegistryObject<Item> TEST_BLOCK = RegistryObject.createOptional(new ResourceLocation(ID, "test_block"), ForgeRegistries.Keys.ITEMS, ID);
+    public static final RegistryObject<Item> TEST_BLOCK = RegistryObject.createOptional(new ResourceLocation(BBLoader.ID, "test_block"), ForgeRegistries.Keys.ITEMS, BBLoader.ID);
 
     public BBLoaderForge()
     {
-        BBLoader.bootstrap().ifPresent(pair -> {
+        DebugData.register().ifPresent(pair -> {
             var bus = FMLJavaModLoadingContext.get().getModEventBus();
-            var blocks = DeferredRegister.create(ForgeRegistries.BLOCKS, ID);
-            var items = DeferredRegister.create(ForgeRegistries.ITEMS, ID);
+            var blocks = DeferredRegister.create(ForgeRegistries.BLOCKS, BBLoader.ID);
+            var items = DeferredRegister.create(ForgeRegistries.ITEMS, BBLoader.ID);
             var block = blocks.register("test_block", pair.getFirst());
             items.register("test_block", () -> pair.getSecond().apply(block.get()));
             blocks.register(bus);
             items.register(bus);
             bus.addListener(this::onBuildCreativeModeTabContents);
-            LOGGER.warn("Register Forge Debug Data!");
+            BBLoader.LOGGER.warn("Register Forge Debug Data!");
         });
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> BBLoaderForgeClient::new);

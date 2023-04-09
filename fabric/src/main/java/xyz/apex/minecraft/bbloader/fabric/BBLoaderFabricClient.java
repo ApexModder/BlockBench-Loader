@@ -2,6 +2,7 @@ package xyz.apex.minecraft.bbloader.fabric;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.client.renderer.RenderType;
@@ -10,9 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
 import xyz.apex.minecraft.bbloader.common.BBLoader;
-import xyz.apex.minecraft.bbloader.common.ResourceLoader;
 
-public final class BBLoaderFabricClient implements BBLoader, ClientModInitializer
+public final class BBLoaderFabricClient implements ClientModInitializer
 {
     @Override
     public void onInitializeClient()
@@ -21,16 +21,18 @@ public final class BBLoaderFabricClient implements BBLoader, ClientModInitialize
             @Override
             public ResourceLocation getFabricId()
             {
-                return new ResourceLocation(ID, "resources");
+                return new ResourceLocation(BBLoader.ID, "resources");
             }
 
             @Override
             public void onResourceManagerReload(ResourceManager resourceManager)
             {
-                ResourceLoader.INSTANCE.invalidate();
+                BBLoader.INSTANCE.invalidate();
             }
         });
 
-        BuiltInRegistries.BLOCK.getOptional(new ResourceLocation(ID, "test_block")).ifPresent(block -> BlockRenderLayerMap.INSTANCE.putBlock(block, RenderType.cutout()));
+        ModelLoadingRegistry.INSTANCE.registerResourceProvider(BBLoaderResourceHandler::new);
+
+        BuiltInRegistries.BLOCK.getOptional(new ResourceLocation(BBLoader.ID, "test_block")).ifPresent(block -> BlockRenderLayerMap.INSTANCE.putBlock(block, RenderType.cutout()));
     }
 }

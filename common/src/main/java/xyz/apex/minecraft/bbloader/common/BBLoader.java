@@ -1,79 +1,83 @@
 package xyz.apex.minecraft.bbloader.common;
 
-import com.mojang.datafixers.util.Pair;
-import net.minecraft.core.Direction;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
+import com.google.common.collect.Maps;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import net.minecraft.client.Minecraft;
+import net.minecraft.resources.FileToIdConverter;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
+import xyz.apex.minecraft.bbloader.common.model.BlockBenchModel;
 
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
+import java.io.IOException;
+import java.util.Map;
 
-public interface BBLoader
+public final class BBLoader
 {
-    String ID = "bbloader";
-    Logger LOGGER = LogManager.getLogger();
+    public static final String ID = "bbloader";
+    public static final Logger LOGGER = LogManager.getLogger();
+    @ApiStatus.Internal public static final BBLoader INSTANCE = new BBLoader();
 
-    String DEBUG_DATA_JVM_PROPERTY_NAME = "apex.%s.test_data.enabled".formatted(ID);
-    boolean IS_DEBUG_DATA_ENABLED = Boolean.parseBoolean(System.getProperty(DEBUG_DATA_JVM_PROPERTY_NAME, "false"));
+    private final FileToIdConverter converter = new FileToIdConverter("models/bbmodel", ".bbmodel");
 
-    static Optional<Pair<Supplier<Block>, Function<Block, Item>>> bootstrap()
+    private final Map<ResourceLocation, BlockBenchModel> models = Maps.newHashMap();
+
+    private BBLoader() {}
+
+    private BlockBenchModel loadModel(ResourceLocation modelName)
     {
-        if(!IS_DEBUG_DATA_ENABLED) return Optional.empty();
+        var modelPath = converter.idToFile(modelName);
 
-        var lines = new String[] {
-                "Debug Data Enabled!!",
-                "",
-                "No support will be provided while debug data is enabled.",
-                "Please try to reproduce any issues with debug data disabled!",
-                "",
-                "To disable debug data remove or set the following JVM property to false",
-                DEBUG_DATA_JVM_PROPERTY_NAME
-        };
+        BBLoader.LOGGER.debug("Loading BBModel '{}' ({})...", modelPath, modelName);
 
-        var max = Stream.of(lines).mapToInt(String::length).max().orElse(0) + 4;
-        var header = "*".repeat(max);
-        LOGGER.warn(header);
-        Stream.of(lines).map("* %s"::formatted).map(s -> StringUtils.rightPad(s, max - 2)).map("%s *"::formatted).forEach(LOGGER::warn);
-        LOGGER.warn(header);
-
-        return Optional.of(Pair.of(
-                () -> new DebugTestBlock(BlockBehaviour.Properties.copy(Blocks.WHITE_WOOL).noOcclusion()),
-                block -> new BlockItem(block, new Item.Properties())
-        ));
+        try(var reader = Minecraft.getInstance().getResourceManager().openAsReader(modelPath))
+        {
+            var model = BlockBenchModel.fromReader(reader);
+            BBLoader.LOGGER.debug("Loaded BBModel '{}' ({}) successfully!", modelPath, modelName);
+            return model;
+        }
+        catch(JsonParseException | IOException e)
+        {
+            BBLoader.LOGGER.error("Failed to load BBModel '{}' ({})!", modelPath, modelName, e);
+            throw new RuntimeException(e);
+        }
     }
 
-    final class DebugTestBlock extends HorizontalDirectionalBlock
+    public void invalidate()
     {
-        private DebugTestBlock(Properties properties)
+        models.clear();
+    }
+
+    public static BlockBenchModel getModel(ResourceLocation modelPath)
+    {
+        return INSTANCE.models.computeIfAbsent(modelPath, INSTANCE::loadModel);
+    }
+
+    @Nullable
+    public static BlockBenchModel getModel(JsonObject root, boolean optional) throws JsonParseException
+    {
+        // if(!GsonHelper.isStringValue(root, "loader")) return null;
+        // var loader = GsonHelper.getAsString(root, "loader");
+        // if(!loader.equals("%s:geometry".formatted(BBLoader.ID))) return null;
+
+        if(!GsonHelper.isStringValue(root, "bbmodel"))
         {
-            super(properties);
-            Validate.isTrue(IS_DEBUG_DATA_ENABLED);
-            registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH));
+            if(!optional) throw new JsonParseException("Missing requires BBModel property!");
+            return null;
         }
 
-        @Override
-        protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
+        var rawBBModelName = GsonHelper.getAsString(root, "bbmodel");
+        var bbModelName = ResourceLocation.tryParse(rawBBModelName);
+        if(bbModelName == null)
         {
-            super.createBlockStateDefinition(builder.add(FACING));
+            if(!optional) throw new JsonParseException("Invalid BBModel property! [Invalid resource location] '%s'".formatted(rawBBModelName));
+            return null;
         }
 
-        @Override
-        public BlockState getStateForPlacement(BlockPlaceContext context)
-        {
-            return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
-        }
+        return getModel(bbModelName);
     }
 }
