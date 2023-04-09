@@ -10,7 +10,7 @@ Loading a BBModel is done directly in the regular model json files
 ```json5
 {
     // ...
-    // must be this exact file
+    // must be this exact value
     "loader": "bbloader:geometry",
     // similar to other model paths, but expands to the following
     // assets/<modid>/models/bbmodel/<model_path>.bbmodel
