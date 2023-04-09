@@ -17,6 +17,8 @@ public final class BBLoaderFabricClient implements ClientModInitializer
     @Override
     public void onInitializeClient()
     {
+        BBLoader.INSTANCE.setModLoader(new FabricModLoader());
+
         ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
             @Override
             public ResourceLocation getFabricId()

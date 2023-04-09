@@ -5,8 +5,10 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import xyz.apex.minecraft.bbloader.common.model.BBDisplay;
 import xyz.apex.minecraft.bbloader.common.model.BBElement;
 import xyz.apex.minecraft.bbloader.common.model.BBFace;
 import xyz.apex.minecraft.bbloader.common.model.BlockBenchModel;
@@ -24,7 +26,7 @@ public interface VanillaHelper
                 Map.of(), // TODO: Textures
                 bbModel.ambientOcclusion(),
                 bbModel.frontGuiLight() ? BlockModel.GuiLight.FRONT : BlockModel.GuiLight.SIDE,
-                ItemTransforms.NO_TRANSFORMS, // TODO: ItemTransforms
+                BBLoader.modLoader().buildItemTransforms(bbModel),
                 List.of() // TODO: ItemPredicates
         );
     }
@@ -61,7 +63,7 @@ public interface VanillaHelper
                 to,
                 elementFaces(bbModel, bbElement),
                 elementRotation(bbModel, bbElement),
-                true
+                true // TODO: can this shade flag be loaded from bbmodel json?
         );
     }
 
@@ -80,9 +82,9 @@ public interface VanillaHelper
     private static BlockElementFace elementFace(BlockBenchModel bbModel, BBElement bbElement, BBFace bbFace)
     {
         return new BlockElementFace(
-                null,
+                null, // TODO: cull face support
                 bbFace.tintIndex(),
-                "#plush",
+                "#plush", // TODO: Lookup correct texture
                 elementFaceUV(bbModel, bbElement, bbFace)
         );
     }
@@ -111,6 +113,28 @@ public interface VanillaHelper
                 },
                 bbElement.rescale()
         );
+    }
+
+    static ItemTransform itemTransform(BlockBenchModel bbModel, BBDisplay bbDisplay)
+    {
+        var rotation = new Vector3f(bbDisplay.rotation());
+
+        var translation = new Vector3f(bbDisplay.translation());
+        translation.mul(.0625F);
+        translation.set(
+                Mth.clamp(translation.x(), -5F, 5F),
+                Mth.clamp(translation.y(), -5F, 5F),
+                Mth.clamp(translation.z(), -5F, 5F)
+        );
+
+        var scale = new Vector3f(bbDisplay.scale());
+        scale.set(
+                Mth.clamp(scale.x(), -4F, 4F),
+                Mth.clamp(scale.y(), -4F, 4F),
+                Mth.clamp(scale.z(), -4F, 4F)
+        );
+
+        return new ItemTransform(rotation, translation, scale);
     }
 
     private static float[] uvs(BlockBenchModel bbModel, BBElement bbElement, BBFace bbFace)

@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.ApiStatus;
@@ -15,6 +16,7 @@ import xyz.apex.minecraft.bbloader.common.model.BlockBenchModel;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 
 public final class BBLoader
 {
@@ -23,8 +25,8 @@ public final class BBLoader
     @ApiStatus.Internal public static final BBLoader INSTANCE = new BBLoader();
 
     private final FileToIdConverter converter = new FileToIdConverter("models/bbmodel", ".bbmodel");
-
     private final Map<ResourceLocation, BlockBenchModel> models = Maps.newHashMap();
+    @Nullable private ModLoader modLoader = null;
 
     private BBLoader() {}
 
@@ -50,6 +52,12 @@ public final class BBLoader
     public void invalidate()
     {
         models.clear();
+    }
+
+    public void setModLoader(ModLoader modLoader)
+    {
+        Validate.isTrue(this.modLoader == null);
+        this.modLoader = modLoader;
     }
 
     public static BlockBenchModel getModel(ResourceLocation modelPath)
@@ -79,5 +87,10 @@ public final class BBLoader
         }
 
         return getModel(bbModelName);
+    }
+
+    public static ModLoader modLoader()
+    {
+        return Objects.requireNonNull(INSTANCE.modLoader);
     }
 }

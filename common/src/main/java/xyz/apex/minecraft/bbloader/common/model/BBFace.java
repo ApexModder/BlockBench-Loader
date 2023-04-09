@@ -22,7 +22,7 @@ public record BBFace(
         {
             var root = json.getAsJsonObject();
             return new BBFace(
-                    JsonHelper.parseVector4(root, "uv", false),
+                    JsonHelper.parseVector4(root, "uv", null),
                     parseRotation(root),
                     GsonHelper.getAsInt(root, "texture", -1),
                     GsonHelper.getAsInt(root, "tintindex", -1)

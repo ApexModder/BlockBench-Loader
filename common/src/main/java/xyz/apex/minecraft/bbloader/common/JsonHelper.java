@@ -9,12 +9,13 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import java.util.UUID;
+import java.util.function.Supplier;
 
 public interface JsonHelper
 {
-    static Vector4f parseVector4(JsonObject root, String key, boolean optional) throws JsonParseException
+    static Vector4f parseVector4(JsonObject root, String key, @Nullable Supplier<Vector4f> defaultValue) throws JsonParseException
     {
-        if(optional && !GsonHelper.isArrayNode(root, key)) return new Vector4f();
+        if(defaultValue != null && !GsonHelper.isArrayNode(root, key)) return defaultValue.get();
         var array = GsonHelper.getAsJsonArray(root, key);
         if(array.size() != 4) throw new JsonParseException("Expected array with size of 4, found: %d".formatted(array.size()));
         return new Vector4f(
@@ -25,9 +26,9 @@ public interface JsonHelper
         );
     }
 
-    static Vector3f parseVector3(JsonObject root, String key, boolean optional) throws JsonParseException
+    static Vector3f parseVector3(JsonObject root, String key, @Nullable Supplier<Vector3f> defaultValue) throws JsonParseException
     {
-        if(optional && !GsonHelper.isArrayNode(root, key)) return new Vector3f();
+        if(defaultValue != null && !GsonHelper.isArrayNode(root, key)) return defaultValue.get();
         var array = GsonHelper.getAsJsonArray(root, key);
         if(array.size() != 3) throw new JsonParseException("Expected array with size of 3, found: %d".formatted(array.size()));
         return new Vector3f(
@@ -37,9 +38,9 @@ public interface JsonHelper
         );
     }
 
-    static Vector2f parseVector2(JsonObject root, String key, boolean optional) throws JsonParseException
+    static Vector2f parseVector2(JsonObject root, String key, @Nullable Supplier<Vector2f> defaultValue) throws JsonParseException
     {
-        if(optional && !GsonHelper.isArrayNode(root, key)) return new Vector2f();
+        if(defaultValue != null && !GsonHelper.isArrayNode(root, key)) return defaultValue.get();
         var array = GsonHelper.getAsJsonArray(root, key);
         if(array.size() != 2) throw new JsonParseException("Expected array with size of 2, found: %d".formatted(array.size()));
         return new Vector2f(

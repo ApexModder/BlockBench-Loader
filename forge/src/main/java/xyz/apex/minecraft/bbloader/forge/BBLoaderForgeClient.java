@@ -10,6 +10,7 @@ final class BBLoaderForgeClient
 {
     BBLoaderForgeClient()
     {
+        BBLoader.INSTANCE.setModLoader(new ForgeModLoader());
         var bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::onRegisterClientResourceReload);
         bus.addListener(this::onRegisterGeometryLoader);
