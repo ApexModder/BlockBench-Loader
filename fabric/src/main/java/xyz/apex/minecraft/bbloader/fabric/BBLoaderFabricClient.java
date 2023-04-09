@@ -2,26 +2,22 @@ package xyz.apex.minecraft.bbloader.fabric;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.util.profiling.ProfilerFiller;
 import xyz.apex.minecraft.bbloader.common.BBLoader;
 import xyz.apex.minecraft.bbloader.common.ResourceLoader;
-
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 
 public final class BBLoaderFabricClient implements BBLoader, ClientModInitializer
 {
     @Override
     public void onInitializeClient()
     {
-        ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new IdentifiableResourceReloadListener() {
+        ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
             @Override
             public ResourceLocation getFabricId()
             {
@@ -29,9 +25,9 @@ public final class BBLoaderFabricClient implements BBLoader, ClientModInitialize
             }
 
             @Override
-            public CompletableFuture<Void> reload(PreparationBarrier preparationBarrier, ResourceManager resourceManager, ProfilerFiller preparationsProfiler, ProfilerFiller reloadProfiler, Executor backgroundExecutor, Executor gameExecutor)
+            public void onResourceManagerReload(ResourceManager resourceManager)
             {
-                return ResourceLoader.INSTANCE.reload(preparationBarrier, resourceManager, preparationsProfiler, reloadProfiler, backgroundExecutor, gameExecutor);
+                ResourceLoader.INSTANCE.invalidate();
             }
         });
 

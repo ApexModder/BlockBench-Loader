@@ -19,7 +19,6 @@ import net.minecraftforge.client.model.IModelBuilder;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IGeometryLoader;
 import net.minecraftforge.client.model.geometry.SimpleUnbakedGeometry;
-import org.apache.commons.lang3.Validate;
 import org.joml.Math;
 import org.joml.*;
 import xyz.apex.minecraft.bbloader.common.BBLoader;
@@ -40,8 +39,7 @@ public final class BBGeometryLoader implements IGeometryLoader<BBGeometryLoader.
         var bbModelName = ResourceLocation.tryParse(rawBBModelName);
         if(bbModelName == null) throw new JsonParseException("Invalid BBModel property! [Invalid resource location] '%s'".formatted(rawBBModelName));
         var bbModel = ResourceLoader.INSTANCE.getModel(bbModelName);
-        Validate.notNull(bbModel, "No BBModel exists with the name: '%s'", bbModelName);
-        return new BBGeometry(bbModel);
+        return new BBGeometry(bbModel.orElseThrow(() -> new JsonParseException("No BBModel exists with the name: '%s'".formatted(bbModelName))));
     }
 
     public static final class BBGeometry extends SimpleUnbakedGeometry<BBGeometry>

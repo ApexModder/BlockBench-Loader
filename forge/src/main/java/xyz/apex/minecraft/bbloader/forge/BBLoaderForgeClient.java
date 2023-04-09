@@ -1,5 +1,6 @@
 package xyz.apex.minecraft.bbloader.forge;
 
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -21,6 +22,6 @@ final class BBLoaderForgeClient
 
     private void onRegisterClientResourceReload(RegisterClientReloadListenersEvent event)
     {
-        event.registerReloadListener(ResourceLoader.INSTANCE);
+        event.registerReloadListener((ResourceManagerReloadListener) pResourceManager -> ResourceLoader.INSTANCE.invalidate());
     }
 }

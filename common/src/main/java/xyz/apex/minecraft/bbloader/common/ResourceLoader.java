@@ -1,59 +1,54 @@
 package xyz.apex.minecraft.bbloader.common;
 
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.google.gson.JsonParseException;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import org.jetbrains.annotations.ApiStatus;
 import xyz.apex.minecraft.bbloader.common.model.BlockBenchModel;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 
 @ApiStatus.Internal
-public final class ResourceLoader implements ResourceManagerReloadListener
+public final class ResourceLoader
 {
     public static final ResourceLoader INSTANCE = new ResourceLoader();
 
     private final FileToIdConverter converter = new FileToIdConverter("models/bbmodel", ".bbmodel");
 
-    private Map<ResourceLocation, BlockBenchModel> models = ImmutableMap.of();
+    private final Map<ResourceLocation, Optional<BlockBenchModel>> models = Maps.newHashMap();
 
     private ResourceLoader() {}
 
-    public BlockBenchModel getModel(ResourceLocation modelPath)
+    public Optional<BlockBenchModel> getModel(ResourceLocation modelPath)
     {
-        return models.get(modelPath);
+        return models.computeIfAbsent(modelPath, this::loadModel);
     }
 
-    @Override
-    public void onResourceManagerReload(ResourceManager resourceManager)
+    private Optional<BlockBenchModel> loadModel(ResourceLocation modelName)
     {
-        BBLoader.LOGGER.info("Loading BlockBench models...");
-        var models = ImmutableMap.<ResourceLocation, BlockBenchModel>builder();
-        var resources = converter.listMatchingResources(resourceManager);
+        var modelPath = converter.idToFile(modelName);
 
-        for(var entry : resources.entrySet())
+        BBLoader.LOGGER.debug("Loading BBModel '{}' ({})...", modelPath, modelName);
+
+        try(var reader = Minecraft.getInstance().getResourceManager().openAsReader(modelPath))
         {
-            var resourcePath = entry.getKey();
-            BBLoader.LOGGER.debug("Loading BBModel '{}'...", resourcePath);
-
-            try(var reader = resourceManager.openAsReader(resourcePath))
-            {
-                var model = BlockBenchModel.fromReader(reader);
-                var resourceId = converter.fileToId(resourcePath);
-                models.put(resourceId, model);
-                BBLoader.LOGGER.debug("Loaded BBModel '{}' ({}) successfully!", resourcePath, resourceId);
-            }
-            catch(JsonParseException | IOException e)
-            {
-                BBLoader.LOGGER.error("Failed to load BBModel '{}'!", resourcePath, e);
-            }
+            var model = BlockBenchModel.fromReader(reader);
+            BBLoader.LOGGER.debug("Loaded BBModel '{}' ({}) successfully!", modelPath, modelName);
+            return Optional.of(model);
         }
+        catch(JsonParseException | IOException e)
+        {
+            BBLoader.LOGGER.error("Failed to load BBModel '{}' ({})!", modelPath, modelName, e);
+            return Optional.empty();
+        }
+    }
 
-        this.models = models.build();
-        BBLoader.LOGGER.info("Finished Loading BBModels, Loaded {} BBModel(s)!", this.models.size());
+    public void invalidate()
+    {
+        models.clear();
     }
 }
