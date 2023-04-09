@@ -1,0 +1,19 @@
+{
+    "variants": {
+        "facing=west": {
+            "model": "bbloader:block/test_block",
+            "y": 270
+        },
+        "facing=south": {
+            "model": "bbloader:block/test_block",
+            "y": 180
+        },
+        "facing=north": {
+            "model": "bbloader:block/test_block"
+        },
+        "facing=east": {
+            "model": "bbloader:block/test_block",
+            "y": 90
+        }
+    }
+}

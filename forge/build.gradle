@@ -26,6 +26,7 @@ minecraft {
             ideaModule "${rootProject.name}.${project.name}.main"
             args '--width', 1920, '--height', 1080
             jvmArg '-XX:+AllowEnhancedClassRedefinition'
+            property "apex.${MOD_ID}.test_data.enabled", 'true'
 
             mods {
                 "${MOD_ID}" {

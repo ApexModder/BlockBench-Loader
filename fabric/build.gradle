@@ -11,6 +11,7 @@ loom {
         client {
             client()
             vmArg '-XX:+AllowEnhancedClassRedefinition'
+            property "apex.${MOD_ID}.test_data.enabled", 'true'
             ideConfigGenerated true
         }
     }

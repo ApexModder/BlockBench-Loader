@@ -1,0 +1,5 @@
+{
+    "loader": "bbloader:geometry",
+    "bbmodel": "bbloader:plush",
+    "render_type": "minecraft:cutout"
+}
