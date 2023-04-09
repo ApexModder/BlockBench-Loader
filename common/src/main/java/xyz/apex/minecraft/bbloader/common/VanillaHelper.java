@@ -3,7 +3,6 @@ package xyz.apex.minecraft.bbloader.common;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.renderer.block.model.*;
-import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
@@ -18,7 +17,7 @@ import java.util.Map;
 
 public interface VanillaHelper
 {
-    static UnbakedModel toVanilla(BlockBenchModel bbModel)
+    static BlockModel toVanilla(BlockBenchModel bbModel)
     {
         return new BlockModel(
                 null, // TODO: Parents?
@@ -31,7 +30,7 @@ public interface VanillaHelper
         );
     }
 
-    private static List<BlockElement> elements(BlockBenchModel bbModel)
+    static List<BlockElement> elements(BlockBenchModel bbModel)
     {
         var elements = ImmutableList.<BlockElement>builder();
 
@@ -44,7 +43,7 @@ public interface VanillaHelper
     }
 
     @Nullable
-    private static BlockElement element(BlockBenchModel bbModel, BBElement bbElement)
+    static BlockElement element(BlockBenchModel bbModel, BBElement bbElement)
     {
         if(!bbElement.export() || !bbElement.visibility()) return null;
 
@@ -67,7 +66,7 @@ public interface VanillaHelper
         );
     }
 
-    private static Map<Direction, BlockElementFace> elementFaces(BlockBenchModel bbModel, BBElement bbElement)
+    static Map<Direction, BlockElementFace> elementFaces(BlockBenchModel bbModel, BBElement bbElement)
     {
         var map = ImmutableMap.<Direction, BlockElementFace>builder();
 
@@ -79,7 +78,7 @@ public interface VanillaHelper
         return map.build();
     }
 
-    private static BlockElementFace elementFace(BlockBenchModel bbModel, BBElement bbElement, BBFace bbFace)
+    static BlockElementFace elementFace(BlockBenchModel bbModel, BBElement bbElement, BBFace bbFace)
     {
         return new BlockElementFace(
                 null, // TODO: cull face support
@@ -89,7 +88,7 @@ public interface VanillaHelper
         );
     }
 
-    private static BlockFaceUV elementFaceUV(BlockBenchModel bbModel, BBElement bbElement, BBFace bbFace)
+    static BlockFaceUV elementFaceUV(BlockBenchModel bbModel, BBElement bbElement, BBFace bbFace)
     {
         return new BlockFaceUV(
                 uvs(bbModel, bbElement, bbFace),
@@ -98,7 +97,7 @@ public interface VanillaHelper
     }
 
     @Nullable
-    private static BlockElementRotation elementRotation(BlockBenchModel bbModel, BBElement bbElement)
+    static BlockElementRotation elementRotation(BlockBenchModel bbModel, BBElement bbElement)
     {
         var axis = bbElement.rotationAxis();
         if(axis == null) return null;
@@ -137,7 +136,7 @@ public interface VanillaHelper
         return new ItemTransform(rotation, translation, scale);
     }
 
-    private static float[] uvs(BlockBenchModel bbModel, BBElement bbElement, BBFace bbFace)
+    static float[] uvs(BlockBenchModel bbModel, BBElement bbElement, BBFace bbFace)
     {
         var uv = bbFace.uv();
         return new float[] {
