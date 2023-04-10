@@ -2,12 +2,15 @@ package xyz.apex.minecraft.bbloader.common.model;
 
 import com.google.gson.*;
 import com.google.gson.annotations.SerializedName;
+import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.Nullable;
+import xyz.apex.minecraft.bbloader.common.BBLoader;
 import xyz.apex.minecraft.bbloader.common.JsonHelper;
 
-import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.Base64;
 import java.util.UUID;
 
 public record BBTexture(
@@ -23,7 +26,7 @@ public record BBTexture(
         boolean saved, /* optional, default: false */
         @Nullable UUID uuid, /* optional, default: null */
         @SerializedName("relative_path") @Nullable String relativePath, /* optional, default: null */
-        @Nullable BufferedImage source /* optional, default: null */
+        @Nullable NativeImage source /* optional, default: null */
 )
 {
     public static final class Deserializer implements JsonDeserializer<BBTexture>
@@ -50,23 +53,24 @@ public record BBTexture(
         }
 
         @Nullable
-        private BufferedImage parseSource(JsonObject root) throws JsonParseException
+        private NativeImage parseSource(JsonObject root) throws JsonParseException
         {
-            // TODO: Look into loading the image data and seeing if we can have minecraft use it for the texture slot, rather than a texture file
-            return null;
-            /*if(!GsonHelper.isStringValue(root, "source")) return null;
+            if(!GsonHelper.isStringValue(root, "source")) return null;
             var source = GsonHelper.getAsString(root, "source");
 
             try
             {
-                var bytes = Base64.getDecoder().decode(source);
-                return ImageIO.read(new ByteArrayInputStream(bytes));
+                // 'data:image/png;base64,' causes image to be "corrupted"
+                var index = source.indexOf(',');
+                if(index == -1) return null;
+                var bytes = Base64.getMimeDecoder().decode(source.substring(index));
+                return NativeImage.read(bytes); // NativeImage (Mojang) rather than BufferedImage, should not use java awt were possible
             }
             catch(IllegalArgumentException | IOException e)
             {
                 BBLoader.LOGGER.warn("Error occurred while parsing Base64 encoded source image data!", e);
                 return null;
-            }*/
+            }
         }
     }
 }
