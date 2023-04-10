@@ -58,6 +58,7 @@
         "main": [ "${MOD_GROUP}.fabric.BBLoaderFabric" ],
         "client": [ "${MOD_GROUP}.fabric.BBLoaderFabricClient" ]
     },
+    "accessWidener": "${MOD_ID}.accesswidener",
     "mixins": [ ],
     "depends": {
         "minecraft": "~${MINECRAFT_VERSION}",
