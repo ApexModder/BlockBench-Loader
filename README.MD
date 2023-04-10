@@ -58,7 +58,8 @@ repositories {
 }
 ```
 
-Next add the following dependencies, depending on your project setup & desired platform
+Next add the following dependencies, depending on your project setup & desired platform,
+[See here for all available versions & artifacts](https://nexus.covers1624.net/#browse/search=keyword%3Dxyz.apex.minecraft.bbloader)
 ```groovy
 dependencies {
     // VanillaGradle
@@ -66,17 +67,21 @@ dependencies {
     
     // Fabric / Quilt
     modImplementation "xyz.apex.minecraft.bbloader:bbloader-fabric:${BBLOADER_VERSION}+${MINECRAFT_VERSION}"
+    include "xyz.apex.minecraft.bbloader:bbloader-fabric:${BBLOADER_VERSION}+${MINECRAFT_VERSION}"
     
     // ForgeGradle
     implementation fg.deobf("xyz.apex.minecraft.bbloader:bbloader-forge:${BBLOADER_VERSION}+${MINECRAFT_VERSION}")
+    jarJar("xyz.apex.minecraft.bbloader:bbloader-forge:[${BBLOADER_VERSION_MIN},${BBLOADER_VERSION_MAX})")
     
     // Architectury-Common
     modImplementation "xyz.apex.minecraft.bbloader:bbloader-common:${BBLOADER_VERSION}+${MINECRAFT_VERSION}"
     
     // Architectury-Fabric / Architectury-Quilt
     modImplementation "xyz.apex.minecraft.bbloader:bbloader-fabric:${BBLOADER_VERSION}+${MINECRAFT_VERSION}"
+    include "xyz.apex.minecraft.bbloader:bbloader-fabric:${BBLOADER_VERSION}+${MINECRAFT_VERSION}"
     
     // Architectury-Forge
     modImplementation "xyz.apex.minecraft.bbloader:bbloader-forge:${BBLOADER_VERSION}+${MINECRAFT_VERSION}"
+    include "xyz.apex.minecraft.bbloader:bbloader-forge:${BBLOADER_VERSION}+${MINECRAFT_VERSION}"
 }
 ```
