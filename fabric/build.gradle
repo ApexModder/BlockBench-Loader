@@ -11,7 +11,17 @@ loom {
         client {
             client()
             vmArg '-XX:+AllowEnhancedClassRedefinition'
+            ideConfigGenerated true
+        }
+
+        clientDebug {
+            inherit client
             property "apex.${MOD_ID}.test_data.enabled", 'true'
+        }
+
+        server {
+            server()
+            vmArg '-XX:+AllowEnhancedClassRedefinition'
             ideConfigGenerated true
         }
     }

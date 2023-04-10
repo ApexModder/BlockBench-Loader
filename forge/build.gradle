@@ -26,7 +26,26 @@ minecraft {
             ideaModule "${rootProject.name}.${project.name}.main"
             args '--width', 1920, '--height', 1080
             jvmArg '-XX:+AllowEnhancedClassRedefinition'
+
+            mods {
+                "${MOD_ID}" {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        clientDebug {
+            parent runs.client
             property "apex.${MOD_ID}.test_data.enabled", 'true'
+        }
+
+        server {
+            workingDirectory file('run/server')
+            property 'forge.logging.markers', ''
+            property 'forge.logging.console.level', 'debug'
+            ideaModule "${rootProject.name}.${project.name}.main"
+            args 'nogui'
+            jvmArg '-XX:+AllowEnhancedClassRedefinition'
 
             mods {
                 "${MOD_ID}" {
