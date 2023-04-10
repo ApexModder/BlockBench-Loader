@@ -1,0 +1,19 @@
+{
+    "variants": {
+        "facing=west": {
+            "model": "bbloader:block/mushroom",
+            "y": 270
+        },
+        "facing=south": {
+            "model": "bbloader:block/mushroom",
+            "y": 180
+        },
+        "facing=north": {
+            "model": "bbloader:block/mushroom"
+        },
+        "facing=east": {
+            "model": "bbloader:block/mushroom",
+            "y": 90
+        }
+    }
+}

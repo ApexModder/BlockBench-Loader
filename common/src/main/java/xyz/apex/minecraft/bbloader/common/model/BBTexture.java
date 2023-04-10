@@ -1,9 +1,14 @@
 package xyz.apex.minecraft.bbloader.common.model;
 
-import com.google.gson.*;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.google.gson.annotations.SerializedName;
 import com.mojang.blaze3d.platform.NativeImage;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import xyz.apex.minecraft.bbloader.common.BBLoader;
 import xyz.apex.minecraft.bbloader.common.JsonHelper;
@@ -26,9 +31,40 @@ public record BBTexture(
         boolean saved, /* optional, default: false */
         @Nullable UUID uuid, /* optional, default: null */
         @SerializedName("relative_path") @Nullable String relativePath, /* optional, default: null */
-        @Nullable NativeImage source /* optional, default: null */
+        @SerializedName("source") @Nullable String base64 /* optional, default: null */
 )
 {
+    public ResourceLocation textureKey(boolean builtIn)
+    {
+        var name = StringUtils.removeEndIgnoreCase(this.name, ".png"); // remove file ext, its not required in texture path
+        var folder = StringUtils.removeEnd(this.folder, "/"); // if ending with / remove it, formatting will add one
+        if(builtIn) folder = StringUtils.appendIfMissingIgnoreCase(folder, "/builtin"); // append builtin folder if its missing
+        var path = "%s/%s".formatted(folder, name);
+        // registers texture leading to following path
+        // <namespace>:block/[<folder>/]<path>
+        return new ResourceLocation(namespace, path);
+    }
+
+    @Nullable
+    public NativeImage source()
+    {
+        if(base64 == null) return null;
+
+        try
+        {
+            // 'data:image/png;base64,' causes image to be "corrupted"
+            var index = base64.indexOf(',');
+            if(index == -1) return null;
+            var bytes = Base64.getMimeDecoder().decode(base64.substring(index));
+            return NativeImage.read(bytes); // NativeImage (Mojang) rather than BufferedImage, should not use java awt were possible
+        }
+        catch(IllegalArgumentException | IOException e)
+        {
+            BBLoader.LOGGER.warn("Error occurred while parsing Base64 encoded source image data!", e);
+            return null;
+        }
+    }
+
     public static final class Deserializer implements JsonDeserializer<BBTexture>
     {
         @Override
@@ -48,29 +84,8 @@ public record BBTexture(
                     GsonHelper.getAsBoolean(root, "saved", false),
                     JsonHelper.parseUUID(root, "uuid"),
                     GsonHelper.getAsString(root, "relativePath", null),
-                    parseSource(root)
+                    GsonHelper.getAsString(root, "source", null)
             );
-        }
-
-        @Nullable
-        private NativeImage parseSource(JsonObject root) throws JsonParseException
-        {
-            if(!GsonHelper.isStringValue(root, "source")) return null;
-            var source = GsonHelper.getAsString(root, "source");
-
-            try
-            {
-                // 'data:image/png;base64,' causes image to be "corrupted"
-                var index = source.indexOf(',');
-                if(index == -1) return null;
-                var bytes = Base64.getMimeDecoder().decode(source.substring(index));
-                return NativeImage.read(bytes); // NativeImage (Mojang) rather than BufferedImage, should not use java awt were possible
-            }
-            catch(IllegalArgumentException | IOException e)
-            {
-                BBLoader.LOGGER.warn("Error occurred while parsing Base64 encoded source image data!", e);
-                return null;
-            }
         }
     }
 }

@@ -1,7 +1,8 @@
 package xyz.apex.minecraft.bbloader.forge;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.CreativeModeTabEvent;
@@ -17,21 +18,25 @@ import xyz.apex.minecraft.bbloader.common.DebugData;
 @Mod(BBLoader.ID)
 public final class BBLoaderForge
 {
-    public static final RegistryObject<Block> TEST_BLOCK = RegistryObject.createOptional(new ResourceLocation(BBLoader.ID, "test_block"), ForgeRegistries.Keys.BLOCKS, BBLoader.ID);
+    public static final RegistryObject<Block> PLUSH_BLOCK = RegistryObject.createOptional(DebugData.PLUSH_BLOCK_NAME, ForgeRegistries.Keys.BLOCKS, BBLoader.ID);
+    public static final RegistryObject<Block> MUSHROOM_BLOCK = RegistryObject.createOptional(DebugData.MUSHROOM_BLOCK_NAME, ForgeRegistries.Keys.BLOCKS, BBLoader.ID);
+
+    public static final RegistryObject<Item> PLUSH_ITEM = RegistryObject.createOptional(DebugData.PLUSH_BLOCK_NAME, ForgeRegistries.Keys.ITEMS, BBLoader.ID);
+    public static final RegistryObject<Item> MUSHROOM_ITEM = RegistryObject.createOptional(DebugData.MUSHROOM_BLOCK_NAME, ForgeRegistries.Keys.ITEMS, BBLoader.ID);
 
     public BBLoaderForge()
     {
-        DebugData.register().ifPresent(pair -> {
-            var bus = FMLJavaModLoadingContext.get().getModEventBus();
-            var blocks = DeferredRegister.create(ForgeRegistries.BLOCKS, BBLoader.ID);
-            var items = DeferredRegister.create(ForgeRegistries.ITEMS, BBLoader.ID);
-            var block = blocks.register("test_block", pair.getFirst());
-            items.register("test_block", () -> pair.getSecond().apply(block.get()));
-            blocks.register(bus);
-            items.register(bus);
-            bus.addListener(this::onBuildCreativeModeTabContents);
-            BBLoader.LOGGER.warn("Register Forge Debug Data!");
-        });
+        var bus = FMLJavaModLoadingContext.get().getModEventBus();
+        var blocks = DeferredRegister.create(ForgeRegistries.BLOCKS, BBLoader.ID);
+        var items = DeferredRegister.create(ForgeRegistries.ITEMS, BBLoader.ID);
+        blocks.register(bus);
+        items.register(bus);
+        bus.addListener(this::onBuildCreativeModeTabContents);
+
+        DebugData.register(
+                (blockName, blockFactory) -> blocks.register(blockName.getPath(), blockFactory)::get,
+                (itemName, blockSupplier) -> items.register(itemName.getPath(), () -> new BlockItem(blockSupplier.get(), new Item.Properties()))
+        );
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> BBLoaderForgeClient::new);
     }
@@ -39,6 +44,7 @@ public final class BBLoaderForge
     private void onBuildCreativeModeTabContents(CreativeModeTabEvent.BuildContents event)
     {
         if(event.getTab() != CreativeModeTabs.TOOLS_AND_UTILITIES) return;
-        TEST_BLOCK.ifPresent(event::accept);
+        PLUSH_ITEM.ifPresent(event::accept);
+        MUSHROOM_ITEM.ifPresent(event::accept);
     }
 }

@@ -1,18 +1,18 @@
 {
     "variants": {
         "facing=west": {
-            "model": "bbloader:block/test_block",
+            "model": "bbloader:block/plush",
             "y": 270
         },
         "facing=south": {
-            "model": "bbloader:block/test_block",
+            "model": "bbloader:block/plush",
             "y": 180
         },
         "facing=north": {
-            "model": "bbloader:block/test_block"
+            "model": "bbloader:block/plush"
         },
         "facing=east": {
-            "model": "bbloader:block/test_block",
+            "model": "bbloader:block/plush",
             "y": 90
         }
     }

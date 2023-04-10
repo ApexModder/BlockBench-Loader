@@ -22,7 +22,8 @@ final class BBLoaderForgeClient
 
     private void onClientSetup(FMLClientSetupEvent event)
     {
-        BBLoaderForge.TEST_BLOCK.ifPresent(block -> ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout()));
+        BBLoaderForge.PLUSH_BLOCK.ifPresent(block -> ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout()));
+        // BBLoaderForge.MUSHROOM_BLOCK.ifPresent(block -> ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout()));
     }
 
     private void onRegisterGeometryLoader(ModelEvent.RegisterGeometryLoaders event)

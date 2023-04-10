@@ -24,8 +24,8 @@ public final class BBLoader
     public static final Logger LOGGER = LogManager.getLogger();
     @ApiStatus.Internal public static final BBLoader INSTANCE = new BBLoader();
 
-    private final FileToIdConverter converter = new FileToIdConverter("models/bbmodel", ".bbmodel");
-    private final Map<ResourceLocation, BlockBenchModel> models = Maps.newHashMap();
+    final FileToIdConverter converter = new FileToIdConverter("models/bbmodel", ".bbmodel");
+    private final Map<ResourceLocation, BlockBenchModel> models = Maps.newConcurrentMap();
     @Nullable private ModLoader modLoader = null;
 
     private BBLoader() {}
@@ -58,6 +58,7 @@ public final class BBLoader
     {
         Validate.isTrue(this.modLoader == null);
         this.modLoader = modLoader;
+        BBSpriteSource.bootstrap();
     }
 
     public static BlockBenchModel getModel(ResourceLocation modelPath)

@@ -4,9 +4,9 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTabs;
-import xyz.apex.minecraft.bbloader.common.BBLoader;
+import net.minecraft.world.item.Item;
 import xyz.apex.minecraft.bbloader.common.DebugData;
 
 public final class BBLoaderFabric implements ModInitializer
@@ -14,11 +14,12 @@ public final class BBLoaderFabric implements ModInitializer
     @Override
     public void onInitialize()
     {
-        DebugData.register().ifPresent(pair -> {
-            var block = Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(BBLoader.ID, "test_block"), pair.getFirst().get());
-            Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(BBLoader.ID, "test_block"), pair.getSecond().apply(block));
-            ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries -> entries.accept(block));
-            BBLoader.LOGGER.debug("Registered Fabric Debug Data!");
+        DebugData.register((blockName, blockFactory) -> {
+            var block = Registry.register(BuiltInRegistries.BLOCK, blockName, blockFactory.get());
+            return () -> block;
+        }, (itemName, blockSupplier) -> {
+            var item = Registry.register(BuiltInRegistries.ITEM, itemName, new BlockItem(blockSupplier.get(), new Item.Properties()));
+            ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries -> entries.accept(item));
         });
     }
 }

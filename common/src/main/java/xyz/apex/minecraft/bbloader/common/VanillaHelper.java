@@ -8,9 +8,7 @@ import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import xyz.apex.minecraft.bbloader.common.model.BBDisplay;
@@ -55,13 +53,7 @@ public interface VanillaHelper
                 textures.put(BlockModel.PARTICLE_TEXTURE_REFERENCE, Either.right("%s".formatted(textureId)));
             }
 
-            var namespace = bbTexture.namespace();
-            var name = StringUtils.removeEndIgnoreCase(bbTexture.name(), ".png"); // remove file ext, its not required in texture path
-            var folder = StringUtils.removeEnd(bbTexture.folder(), "/"); // if ending with / remove it, formatting will add one
-            var path = "%s/%s".formatted(folder, name);
-            // registers texture leading to following path
-            // <namespace>:block/[<folder>/]<path>
-            textures.put(textureId, Either.left(new Material(TextureAtlas.LOCATION_BLOCKS, new ResourceLocation(namespace, path))));
+            textures.put(textureId, Either.left(new Material(TextureAtlas.LOCATION_BLOCKS, bbTexture.textureKey(false))));
         });
 
         // ensure particle always exists
