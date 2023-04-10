@@ -74,6 +74,14 @@ sourcesJar {
     from project(':common').sourceSets.main.allJava
 }
 
+jar {
+    manifest {
+        attributes([
+                'FMLModType': 'GAMELIBRARY'
+        ])
+    }
+}
+
 jar.finalizedBy('reobfJar')
 
 publishing {
