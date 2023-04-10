@@ -71,6 +71,7 @@ dependencies {
     
     // ForgeGradle
     implementation fg.deobf("xyz.apex.minecraft.bbloader:bbloader-forge:${BBLOADER_VERSION}+${MINECRAFT_VERSION}")
+    // ensure jarJar is setup correctly in your project | https://forge.gemwire.uk/wiki/Jar-in-jar
     jarJar("xyz.apex.minecraft.bbloader:bbloader-forge:[${BBLOADER_VERSION_MIN},${BBLOADER_VERSION_MAX})")
     
     // Architectury-Common
