@@ -138,3 +138,18 @@ idea.module {
             file('gradle')
     ]
 }
+
+task copyJars(type: Copy) {
+    def jars = allprojects.collect { it.tasks.withType(Jar) }
+    dependsOn jars
+    from jars
+    into file('jars')
+
+    doLast {
+        file('jars').listFiles().each {
+            if(it.name.endsWithIgnoreCase('-dev.jar')) {
+                it.delete()
+            }
+        }
+    }
+}

@@ -20,6 +20,7 @@ build
 
 # other
 run
+jars/
 
 # Ignore generated data files
 **/generated/**
