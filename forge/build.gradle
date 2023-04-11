@@ -33,9 +33,11 @@ minecraft {
                     source sourceSets.main
                 }
 
-                "${MOD_ID}_test_mod" {
-                    source project(':testmod-common').sourceSets.main
-                    source project(':testmod-forge').sourceSets.main
+                if(findProject(':testmod-common') != null) {
+                    "${MOD_ID}_test_mod" {
+                        source project(':testmod-common').sourceSets.main
+                        source project(':testmod-forge').sourceSets.main
+                    }
                 }
             }
         }
@@ -54,9 +56,11 @@ minecraft {
                     source sourceSets.main
                 }
 
-                "${MOD_ID}_test_mod" {
-                    source project(':testmod-common').sourceSets.main
-                    source project(':testmod-forge').sourceSets.main
+                if(findProject(':testmod-common') != null) {
+                    "${MOD_ID}_test_mod" {
+                        source project(':testmod-common').sourceSets.main
+                        source project(':testmod-forge').sourceSets.main
+                    }
                 }
             }
         }
@@ -67,7 +71,10 @@ dependencies {
     minecraft "net.minecraftforge:forge:${MINECRAFT_VERSION}-${FORGE_VERSION}"
 
     compileOnly project(':common')
-    runtimeOnly project(':testmod-forge')
+
+    if(findProject(':testmod-forge') != null) {
+        runtimeOnly project(':testmod-forge')
+    }
 }
 
 processResources {

@@ -27,9 +27,11 @@ loom {
             sourceSet sourceSets.main
         }
 
-        "${MOD_ID}_test_mod" {
-            sourceSet project(':testmod-common').sourceSets.main
-            sourceSet project(':testmod-fabric').sourceSets.main
+        if(findProject('testmod-common') != null) {
+            "${MOD_ID}_test_mod" {
+                sourceSet project(':testmod-common').sourceSets.main
+                sourceSet project(':testmod-fabric').sourceSets.main
+            }
         }
     }
 }
@@ -52,7 +54,9 @@ dependencies {
     compileOnly project(':common')
     implementation project(path: ':common', configuration: 'namedElements')
 
-    runtimeOnly project(path: ':testmod-fabric', configuration: 'namedElements')
+    if(findProject(':testmod-fabric') != null) {
+        runtimeOnly project(path: ':testmod-fabric', configuration: 'namedElements')
+    }
 }
 
 processResources {
