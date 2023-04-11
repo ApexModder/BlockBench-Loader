@@ -76,7 +76,7 @@ sourcesJar {
 
 task apiJar(type: Jar) {
     from project(':common').sourceSets.api.output
-    classifier 'api'
+    classifier 'api-dev'
 }
 
 task apiSourcesJar(type: Jar) {
@@ -86,6 +86,7 @@ task apiSourcesJar(type: Jar) {
 
 task remapApiJar(type: net.fabricmc.loom.task.RemapJarTask) {
     inputFile = apiJar.archiveFile
+    classifier 'api'
 }
 
 artifacts {
