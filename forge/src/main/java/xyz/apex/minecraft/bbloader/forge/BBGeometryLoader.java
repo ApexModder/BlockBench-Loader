@@ -14,9 +14,9 @@ import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IGeometryLoader;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
 import org.apache.commons.lang3.Validate;
-import xyz.apex.minecraft.bbloader.common.BBLoader;
 import xyz.apex.minecraft.bbloader.common.VanillaHelper;
-import xyz.apex.minecraft.bbloader.common.model.BlockBenchModel;
+import xyz.apex.minecraft.bbloader.common.api.BBLoader;
+import xyz.apex.minecraft.bbloader.common.api.model.BBModel;
 
 import java.util.function.Function;
 
@@ -25,16 +25,16 @@ public final class BBGeometryLoader implements IGeometryLoader<BBGeometryLoader.
     @Override
     public BBGeometry read(JsonObject root, JsonDeserializationContext ctx) throws JsonParseException
     {
-        var bbModel = BBLoader.getModel(root, false);
+        var bbModel = BBLoader.INSTANCE.getModel(root, false);
         Validate.notNull(bbModel); // optional==false | should never be null
         return new BBGeometry(bbModel);
     }
 
     public static final class BBGeometry implements IUnbakedGeometry<BBGeometry>
     {
-        private final BlockBenchModel bbModel;
+        private final BBModel bbModel;
 
-        private BBGeometry(BlockBenchModel bbModel)
+        private BBGeometry(BBModel bbModel)
         {
             this.bbModel = bbModel;
         }

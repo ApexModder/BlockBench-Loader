@@ -1,0 +1,28 @@
+plugins {
+    id 'fabric-loom' version '1.1-SNAPSHOT'
+}
+
+loom {
+    if(accessWidenerFile.exists()) {
+        accessWidenerPath = accessWidenerFile
+    }
+}
+
+repositories {
+    maven { url 'https://repo.spongepowered.org/maven/' }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${MINECRAFT_VERSION}"
+
+    mappings(loom.layered {
+        officialMojangMappings()
+
+        if(rootProject.hasProperty('PARCHMENT_MAPPINGS')) {
+            def mcVersion = rootProject.hasProperty('PARCHMENT_MINECRAFT_VERSION') ? "${PARCHMENT_MINECRAFT_VERSION}" : "${MINECRAFT_VERSION}"
+            parchment("org.parchmentmc.data:parchment-${mcVersion}:${PARCHMENT_MAPPINGS}@zip")
+        }
+    })
+
+    compileOnly project(path: ':common', configuration: 'namedElements')
+}

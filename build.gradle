@@ -16,13 +16,9 @@ subprojects {
     version = "${MOD_VERSION}+${MINECRAFT_VERSION}"
     archivesBaseName = "${MOD_ID}-${project.name}"
 
-    sourceSets {
-        main.resources.srcDirs += [ 'src/main/generated' ]
-
-        test {
-            java.srcDirs = [ ]
-            resources.srcDirs = [ ]
-        }
+    sourceSets.test {
+        java.srcDirs = [ ]
+        resources.srcDirs = [ ]
     }
 
     repositories {
@@ -66,8 +62,6 @@ subprojects {
         toolchain {
             languageVersion.set(JavaLanguageVersion.of("${JAVA_VERSION}"))
         }
-
-        withSourcesJar()
     }
 
     tasks.withType(JavaCompile).configureEach {
@@ -97,37 +91,46 @@ subprojects {
 
     artifacts {
         archives jar
-        archives sourcesJar
     }
 
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                groupId = "${project.group}"
-                artifactId = "${project.archivesBaseName}"
-                version = "${project.version}"
-            }
+    if(!project.name.startsWithIgnoreCase('testmod')) {
+        java {
+            withSourcesJar()
         }
 
-        repositories {
-            if(System.getenv('MAVEN_PASSWORD') != null) {
-                maven {
-                    name 'Covers1624-Maven'
-                    url 'https://nexus.covers1624.net/repository/apex-releases/'
+        artifacts {
+            archives sourcesJar
+        }
 
-                    credentials {
-                        username 'apex'
-                        password System.getenv('MAVEN_PASSWORD')
+        publishing {
+            publications {
+                mavenJava(MavenPublication) {
+                    groupId = "${project.group}"
+                    artifactId = "${project.archivesBaseName}"
+                    version = "${project.version}"
+                }
+            }
+
+            repositories {
+                if(System.getenv('MAVEN_PASSWORD') != null) {
+                    maven {
+                        name 'Covers1624-Maven'
+                        url 'https://nexus.covers1624.net/repository/apex-releases/'
+
+                        credentials {
+                            username 'apex'
+                            password System.getenv('MAVEN_PASSWORD')
+                        }
                     }
                 }
             }
         }
-    }
 
-    idea.module {
-        excludeDirs += [
-                file('run')
-        ]
+        idea.module {
+            excludeDirs += [
+                    file('run')
+            ]
+        }
     }
 }
 
@@ -140,7 +143,7 @@ idea.module {
 }
 
 task copyJars(type: Copy) {
-    def jars = allprojects.collect { it.tasks.withType(Jar) }
+    def jars = [ findProject(':common'), findProject(':fabric'), findProject(':forge') ].findAll { it != null }.collect { it.tasks.withType(Jar) }
     dependsOn jars
     from jars
     into file('jars')

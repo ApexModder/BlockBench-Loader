@@ -1,0 +1,35 @@
+modLoader="javafml"
+loaderVersion="[${FORGE_LOADER_VERSION},)"
+license="${MOD_LICENSE}"
+issueTrackerURL="https://discord.apexstudios.dev/"
+
+[[mods]]
+	modId="${MOD_ID}_test_mod"
+	version="${MOD_VERSION}"
+	displayName="${MOD_NAME} - Test Mod"
+	# updateJSONURL="https://api.modrinth.com/updates/bbloader/forge_updates.json"
+	# displayURL="https://apexstudios.dev/apexcore"
+	logoFile="banner.png"
+	credits="Apex - Programming"
+	authors="ApexStudios"
+	description="${MOD_NAME} - Test Mod"
+	displayTest="MATCH_VERSION"
+
+[[dependencies."${MOD_ID}_test_mod"]]
+	modId="forge"
+	mandatory=true
+	versionRange="${FORGE_VERSION_RANGE}"
+	ordering="AFTER"
+	side="BOTH"
+[[dependencies."${MOD_ID}_test_mod"]]
+	modId="minecraft"
+	mandatory=true
+	versionRange="${MINECRAFT_FORGE_VERSION_RANGE}"
+	ordering="AFTER"
+	side="BOTH"
+[[dependencies."${MOD_ID}_test_mod"]]
+	modId="${MOD_ID}"
+	mandatory=true
+	versionRange="[${MOD_VERSION},)"
+	ordering="AFTER"
+	side="CLIENT"

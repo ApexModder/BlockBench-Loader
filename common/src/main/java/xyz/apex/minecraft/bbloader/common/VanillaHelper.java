@@ -11,10 +11,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
-import xyz.apex.minecraft.bbloader.common.model.BBDisplay;
-import xyz.apex.minecraft.bbloader.common.model.BBElement;
-import xyz.apex.minecraft.bbloader.common.model.BBFace;
-import xyz.apex.minecraft.bbloader.common.model.BlockBenchModel;
+import xyz.apex.minecraft.bbloader.common.api.BBLoader;
+import xyz.apex.minecraft.bbloader.common.api.model.BBDisplay;
+import xyz.apex.minecraft.bbloader.common.api.model.BBElement;
+import xyz.apex.minecraft.bbloader.common.api.model.BBFace;
+import xyz.apex.minecraft.bbloader.common.api.model.BBModel;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public interface VanillaHelper
 {
-    static BlockModel toVanilla(BlockBenchModel bbModel)
+    static BlockModel toVanilla(BBModel bbModel)
     {
         return new BlockModel(
                 null, // TODO: Parents?
@@ -30,12 +31,12 @@ public interface VanillaHelper
                 textures(bbModel),
                 bbModel.ambientOcclusion(),
                 bbModel.frontGuiLight() ? BlockModel.GuiLight.FRONT : BlockModel.GuiLight.SIDE,
-                BBLoader.modLoader().buildItemTransforms(bbModel),
+                BBLoader.INSTANCE.itemTransforms(bbModel),
                 List.of() // TODO: ItemPredicates
         );
     }
 
-    static Map<String, Either<Material, String>> textures(BlockBenchModel bbModel)
+    static Map<String, Either<Material, String>> textures(BBModel bbModel)
     {
         var particle = new AtomicBoolean(false);
         var textures = ImmutableMap.<String, Either<Material, String>>builder();
@@ -71,7 +72,7 @@ public interface VanillaHelper
         return textures.build();
     }
 
-    static List<BlockElement> elements(BlockBenchModel bbModel)
+    static List<BlockElement> elements(BBModel bbModel)
     {
         var elements = ImmutableList.<BlockElement>builder();
 
@@ -84,18 +85,18 @@ public interface VanillaHelper
     }
 
     @Nullable
-    static BlockElement element(BlockBenchModel bbModel, BBElement bbElement)
+    static BlockElement element(BBModel bbModel, BBElement bbElement)
     {
         if(!bbElement.export() || !bbElement.visibility()) return null;
 
-        var from = bbElement.from();
-        var to = bbElement.to();
+        var from = new Vector3f(bbElement.from());
+        var to = new Vector3f(bbElement.to());
         var inflate = bbElement.inflate();
 
         if(inflate != 0F)
         {
-            from = from.sub(inflate, inflate, inflate, new Vector3f());
-            to = to.add(inflate, inflate, inflate, new Vector3f());
+            from.sub(inflate, inflate, inflate);
+            to.add(inflate, inflate, inflate);
         }
 
         return new BlockElement(
@@ -107,7 +108,7 @@ public interface VanillaHelper
         );
     }
 
-    static Map<Direction, BlockElementFace> elementFaces(BlockBenchModel bbModel, BBElement bbElement)
+    static Map<Direction, BlockElementFace> elementFaces(BBModel bbModel, BBElement bbElement)
     {
         var map = ImmutableMap.<Direction, BlockElementFace>builder();
 
@@ -119,7 +120,7 @@ public interface VanillaHelper
         return map.build();
     }
 
-    static BlockElementFace elementFace(BlockBenchModel bbModel, BBElement bbElement, BBFace bbFace)
+    static BlockElementFace elementFace(BBModel bbModel, BBElement bbElement, BBFace bbFace)
     {
         return new BlockElementFace(
                 null, // TODO: cull face support
@@ -129,7 +130,7 @@ public interface VanillaHelper
         );
     }
 
-    static String textureId(BlockBenchModel bbModel, BBElement bbElement, BBFace bbFace)
+    static String textureId(BBModel bbModel, BBElement bbElement, BBFace bbFace)
     {
         var faceTexture = bbFace.texture();
         var textures = bbModel.textures();
@@ -137,7 +138,7 @@ public interface VanillaHelper
         return textures.get(faceTexture).id();
     }
 
-    static BlockFaceUV elementFaceUV(BlockBenchModel bbModel, BBElement bbElement, BBFace bbFace)
+    static BlockFaceUV elementFaceUV(BBModel bbModel, BBElement bbElement, BBFace bbFace)
     {
         return new BlockFaceUV(
                 uvs(bbModel, bbElement, bbFace),
@@ -146,7 +147,7 @@ public interface VanillaHelper
     }
 
     @Nullable
-    static BlockElementRotation elementRotation(BlockBenchModel bbModel, BBElement bbElement)
+    static BlockElementRotation elementRotation(BBModel bbModel, BBElement bbElement)
     {
         var axis = bbElement.rotationAxis();
         if(axis == null) return null;
@@ -163,7 +164,7 @@ public interface VanillaHelper
         );
     }
 
-    static ItemTransform itemTransform(BlockBenchModel bbModel, BBDisplay bbDisplay)
+    static ItemTransform itemTransform(BBModel bbModel, BBDisplay bbDisplay)
     {
         var rotation = new Vector3f(bbDisplay.rotation());
 
@@ -185,7 +186,7 @@ public interface VanillaHelper
         return new ItemTransform(rotation, translation, scale);
     }
 
-    static float[] uvs(BlockBenchModel bbModel, BBElement bbElement, BBFace bbFace)
+    static float[] uvs(BBModel bbModel, BBElement bbElement, BBFace bbFace)
     {
         var uv = bbFace.uv();
         return new float[] {

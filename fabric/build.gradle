@@ -14,15 +14,22 @@ loom {
             ideConfigGenerated true
         }
 
-        clientDebug {
-            inherit client
-            property "apex.${MOD_ID}.test_data.enabled", 'true'
-        }
-
         server {
             server()
             vmArg '-XX:+AllowEnhancedClassRedefinition'
             ideConfigGenerated true
+        }
+    }
+
+    mods {
+        "${MOD_ID}" {
+            sourceSet project(':common').sourceSets.main
+            sourceSet sourceSets.main
+        }
+
+        "${MOD_ID}_test_mod" {
+            sourceSet project(':testmod-common').sourceSets.main
+            sourceSet project(':testmod-fabric').sourceSets.main
         }
     }
 }
@@ -44,18 +51,43 @@ dependencies {
 
     compileOnly project(':common')
     implementation project(path: ':common', configuration: 'namedElements')
+
+    runtimeOnly project(path: ':testmod-fabric', configuration: 'namedElements')
 }
 
 processResources {
+    from project(':common').sourceSets.api.resources
     from project(':common').sourceSets.main.resources
 }
 
 compileJava {
+    source project(':common').sourceSets.api.allSource
     source project(':common').sourceSets.main.allSource
 }
 
 sourcesJar {
+    from project(':common').sourceSets.api.allJava
     from project(':common').sourceSets.main.allJava
+}
+
+task apiJar(type: Jar) {
+    from project(':common').sourceSets.api.output
+    classifier 'api'
+}
+
+task apiSourcesJar(type: Jar) {
+    from project(':common').sourceSets.api.allJava
+    classifier 'api-sources'
+}
+
+task remapApiJar(type: net.fabricmc.loom.task.RemapJarTask) {
+    inputFile = apiJar.archiveFile
+}
+
+artifacts {
+    archives apiJar
+    archives apiSourcesJar
+    archives remapApiJar
 }
 
 publishing {
@@ -65,6 +97,8 @@ publishing {
 
             artifact remapJar
             artifact sourcesJar
+            artifact remapApiJar
+            artifact apiSourcesJar
         }
     }
 }

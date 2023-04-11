@@ -1,0 +1,37 @@
+plugins {
+    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+}
+
+minecraft {
+    if(rootProject.hasProperty('PARCHMENT_MAPPINGS')) {
+        if(rootProject.hasProperty('PARCHMENT_MINECRAFT_VERSION')) {
+            mappings channel: 'parchment', version: "${PARCHMENT_MINECRAFT_VERSION}-${PARCHMENT_MAPPINGS}-${MINECRAFT_VERSION}"
+        } else {
+            mappings channel: 'parchment', version: "${PARCHMENT_MAPPINGS}-${MINECRAFT_VERSION}"
+        }
+    } else {
+        mappings channel: 'official', version: "${MINECRAFT_VERSION}"
+    }
+
+    if(accessTransformerFile.exists()) {
+        accessTransformer = accessTransformerFile
+    }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${MINECRAFT_VERSION}-${FORGE_VERSION}"
+
+    compileOnly project(':common')
+    compileOnly project(':testmod-common')
+}
+
+processResources {
+    from project(':testmod-common').sourceSets.main.resources
+}
+
+compileJava {
+    source project(':testmod-common').sourceSets.main.allSource
+}
+
+jar.finalizedBy('reobfJar')

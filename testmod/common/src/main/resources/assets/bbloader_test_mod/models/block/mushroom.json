@@ -1,0 +1,4 @@
+{
+    "loader": "bbloader:geometry",
+    "bbmodel": "bbloader_test_mod:mushroom"
+}

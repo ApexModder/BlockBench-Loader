@@ -2,10 +2,24 @@ plugins {
     id 'fabric-loom' version '1.1-SNAPSHOT'
 }
 
+sourceSets {
+    api {
+        compileClasspath += sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.runtimeClasspath
+    }
+
+    main {
+        compileClasspath += sourceSets.api.output
+        runtimeClasspath += sourceSets.api.output
+    }
+}
+
 loom {
     if(accessWidenerFile.exists()) {
         accessWidenerPath = accessWidenerFile
     }
+
+    createRemapConfigurations(sourceSets.api)
 }
 
 repositories {
@@ -25,11 +39,38 @@ dependencies {
     })
 }
 
+processResources {
+    from sourceSets.api.resources
+}
+
+compileJava {
+    source sourceSets.api.allSource
+}
+
+sourcesJar {
+    from sourceSets.api.allJava
+}
+
 remapJar.enabled = false
 remapSourcesJar.enabled = false
 
 jar {
     classifier ''
+}
+
+task apiJar(type: Jar) {
+    from sourceSets.api.output
+    classifier 'api'
+}
+
+task apiSourcesJar(type: Jar) {
+    from sourceSets.api.allJava
+    classifier 'api-sources'
+}
+
+artifacts {
+    archives apiJar
+    archives apiSourcesJar
 }
 
 publishing {
@@ -39,6 +80,8 @@ publishing {
 
             artifact jar
             artifact sourcesJar
+            artifact apiJar
+            artifact apiSourcesJar
         }
     }
 }

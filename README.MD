@@ -60,29 +60,37 @@ repositories {
 
 Next add the following dependencies, depending on your project setup & desired platform,
 [See here for all available versions & artifacts](https://nexus.covers1624.net/#browse/search=keyword%3Dxyz.apex.minecraft.bbloader)
+
+_Optional dependencies are for if you want access to the API at compile time, which is not required_
+
 ```groovy
 dependencies {
     // VanillaGradle
-    implementation "xyz.apex.minecraft.bbloader:bbloader-common:${BBLOADER_VERSION}+${MINECRAFT_VERSION}"
+    /* Optional */ compileOnly "xyz.apex.minecraft.bbloader:bbloader-common:${BBLOADER_VERSION}+${MINECRAFT_VERSION}:api"
     
     // Fabric / Quilt
-    modImplementation "xyz.apex.minecraft.bbloader:bbloader-fabric:${BBLOADER_VERSION}+${MINECRAFT_VERSION}"
+    /* Optional */ modCompileOnly "xyz.apex.minecraft.bbloader:bbloader-fabric:${BBLOADER_VERSION}+${MINECRAFT_VERSION}:api"
+    modRuntimeOnly "xyz.apex.minecraft.bbloader:bbloader-fabric:${BBLOADER_VERSION}+${MINECRAFT_VERSION}"
     include "xyz.apex.minecraft.bbloader:bbloader-fabric:${BBLOADER_VERSION}+${MINECRAFT_VERSION}"
     
     // ForgeGradle
-    implementation fg.deobf("xyz.apex.minecraft.bbloader:bbloader-forge:${BBLOADER_VERSION}+${MINECRAFT_VERSION}")
+    /* Optional */ compileOnly fg.deobf("xyz.apex.minecraft.bbloader:bbloader-forge:${BBLOADER_VERSION}+${MINECRAFT_VERSION}:api")
+    runtimeOnly fg.deobf("xyz.apex.minecraft.bbloader:bbloader-forge:${BBLOADER_VERSION}+${MINECRAFT_VERSION}")
     // ensure jarJar is setup correctly in your project | https://forge.gemwire.uk/wiki/Jar-in-jar
     jarJar("xyz.apex.minecraft.bbloader:bbloader-forge:[${BBLOADER_VERSION_MIN},${BBLOADER_VERSION_MAX})")
     
     // Architectury-Common
-    modImplementation "xyz.apex.minecraft.bbloader:bbloader-common:${BBLOADER_VERSION}+${MINECRAFT_VERSION}"
+    /* Optional */ modCompileOnly "xyz.apex.minecraft.bbloader:bbloader-common:${BBLOADER_VERSION}+${MINECRAFT_VERSION}:api"
+    modRuntimeOnly "xyz.apex.minecraft.bbloader:bbloader-common:${BBLOADER_VERSION}+${MINECRAFT_VERSION}"
     
     // Architectury-Fabric / Architectury-Quilt
-    modImplementation "xyz.apex.minecraft.bbloader:bbloader-fabric:${BBLOADER_VERSION}+${MINECRAFT_VERSION}"
+    /* Optional */ modCompileOnly "xyz.apex.minecraft.bbloader:bbloader-fabric:${BBLOADER_VERSION}+${MINECRAFT_VERSION}:api"
+    modRuntimeOnly "xyz.apex.minecraft.bbloader:bbloader-fabric:${BBLOADER_VERSION}+${MINECRAFT_VERSION}"
     include "xyz.apex.minecraft.bbloader:bbloader-fabric:${BBLOADER_VERSION}+${MINECRAFT_VERSION}"
     
     // Architectury-Forge
-    modImplementation "xyz.apex.minecraft.bbloader:bbloader-forge:${BBLOADER_VERSION}+${MINECRAFT_VERSION}"
+    /* Optional */ modCompileOnly "xyz.apex.minecraft.bbloader:bbloader-forge:${BBLOADER_VERSION}+${MINECRAFT_VERSION}:api"
+    modRuntimeOnly "xyz.apex.minecraft.bbloader:bbloader-forge:${BBLOADER_VERSION}+${MINECRAFT_VERSION}"
     include "xyz.apex.minecraft.bbloader:bbloader-forge:${BBLOADER_VERSION}+${MINECRAFT_VERSION}"
 }
 ```

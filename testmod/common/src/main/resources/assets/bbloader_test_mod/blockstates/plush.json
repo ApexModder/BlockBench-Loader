@@ -1,0 +1,19 @@
+{
+    "variants": {
+        "facing=west": {
+            "model": "bbloader_test_mod:block/plush",
+            "y": 270
+        },
+        "facing=south": {
+            "model": "bbloader_test_mod:block/plush",
+            "y": 180
+        },
+        "facing=north": {
+            "model": "bbloader_test_mod:block/plush"
+        },
+        "facing=east": {
+            "model": "bbloader_test_mod:block/plush",
+            "y": 90
+        }
+    }
+}

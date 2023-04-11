@@ -53,9 +53,8 @@
         }
     ],
     "license": "${MOD_LICENSE}",
-    "environment": "*",
+    "environment": "client",
     "entrypoints": {
-        "main": [ "${MOD_GROUP}.fabric.BBLoaderFabric" ],
         "client": [ "${MOD_GROUP}.fabric.BBLoaderFabricClient" ]
     },
     "accessWidener": "${MOD_ID}.accesswidener",

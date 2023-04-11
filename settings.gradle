@@ -21,4 +21,12 @@ include 'common'
 include 'forge'
 include 'fabric'
 
+include 'testmod-common'
+include 'testmod-forge'
+include 'testmod-fabric'
+
+project(':testmod-common').projectDir = file('testmod/common')
+project(':testmod-forge').projectDir = file('testmod/forge')
+project(':testmod-fabric').projectDir = file('testmod/fabric')
+
 rootProject.name = "${MOD_NAME}-${MINECRAFT_VERSION}"

@@ -8,7 +8,10 @@ import net.minecraft.client.renderer.texture.atlas.SpriteSources;
 import net.minecraft.client.resources.metadata.animation.AnimationMetadataSection;
 import net.minecraft.client.resources.metadata.animation.FrameSize;
 import net.minecraft.server.packs.resources.ResourceManager;
+import org.jetbrains.annotations.ApiStatus;
+import xyz.apex.minecraft.bbloader.common.api.BBLoader;
 
+@ApiStatus.Internal
 final class BBSpriteSource implements SpriteSource
 {
     public static final Codec<BBSpriteSource> CODEC = Codec.unit(BBSpriteSource::new);
@@ -20,11 +23,11 @@ final class BBSpriteSource implements SpriteSource
     public void run(ResourceManager resourceManager, Output output)
     {
         BBLoader.LOGGER.info("Loading BBModel Sprites!");
-        BBLoader.INSTANCE.converter.listMatchingResources(resourceManager).forEach((modelPath, resource) -> {
+        BBLoader.FILE_TO_ID_CONVERTER.listMatchingResources(resourceManager).forEach((modelPath, resource) -> {
             try
             {
-                var modelName = BBLoader.INSTANCE.converter.fileToId(modelPath);
-                var bbModel = BBLoader.getModel(modelName);
+                var modelName = BBLoader.FILE_TO_ID_CONVERTER.fileToId(modelPath);
+                var bbModel = BBLoader.INSTANCE.getModel(modelName);
                 bbModel.textures().forEach(bbTexture -> {
                     var source = bbTexture.source();
                     if(source == null) return;

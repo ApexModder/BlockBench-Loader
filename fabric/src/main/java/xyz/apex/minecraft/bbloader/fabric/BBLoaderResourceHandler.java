@@ -10,8 +10,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.Nullable;
-import xyz.apex.minecraft.bbloader.common.BBLoader;
 import xyz.apex.minecraft.bbloader.common.VanillaHelper;
+import xyz.apex.minecraft.bbloader.common.api.BBLoader;
 
 import java.io.IOException;
 
@@ -30,7 +30,7 @@ final class BBLoaderResourceHandler implements ModelResourceProvider
     {
         var json = readJson(resourceId);
         if(json == null) return null; // builtins fail to be read cause they are builtin and have no json
-        var bbModel = BBLoader.getModel(json, true);
+        var bbModel = BBLoader.INSTANCE.getModel(json, true);
         if(bbModel == null) return null;
         return VanillaHelper.toVanilla(bbModel);
     }
