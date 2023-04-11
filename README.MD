@@ -31,8 +31,8 @@ Both platforms register a new SpriteSourceType, which allows us to load the Base
 `<namespace>:<folder>/builtin/<path>`.<br>
 Set this in your BlockBench texture properties to use the B64Texture rather than a PNG file in the textures folder. 
 
-We have provided 2 example models using this loader, run this mod with the following JVM Property set to true to enable the test blocks.
-<br>`apex.bbloader.test_data.enabled`
+We have included a simple TestMod which makes use of this loader to load 2 BBModels `plush` & `mushroom`, these are provided as examples only.
+<br>_See `TestMod/Common` resources for model json examples._
 
 ## Setup
 To load a BBModel, you must add the following tags to your models json file. These tell the game to use our model loader & which BBModel to load.
